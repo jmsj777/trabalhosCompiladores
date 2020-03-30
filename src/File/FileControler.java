@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,7 +31,8 @@ public class FileControler {
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int resultado = fc.showOpenDialog(chose);
             if (resultado == JFileChooser.CANCEL_OPTION) {
-                System.exit(1);
+                //System.exit(1);
+                return null;
             }
             java.io.File fileName = fc.getSelectedFile();
             java.io.FileReader input = null;

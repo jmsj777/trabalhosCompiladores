@@ -211,7 +211,9 @@ public class Main extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         file = Freader.getFile(this);
-        CodeArea.setText(file.getFileText());
+        if(file!=null){
+            CodeArea.setText(file.getFileText());
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void CodeAreaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_CodeAreaCaretUpdate
