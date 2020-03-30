@@ -107,7 +107,7 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,7 +125,7 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +230,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(2, 2, 2)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(220, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -288,7 +288,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No file opened. Try to open a file first!", "No File Opened", 0);
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
-
+    
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
 
         String markup
@@ -317,23 +317,43 @@ public class Main extends javax.swing.JFrame {
 
         textPaneTeste.setText(markup);
         // Create an AttributeSet with which to change color and font.
-        SimpleAttributeSet azulAttrs = new SimpleAttributeSet();
-        SimpleAttributeSet vermelhoAttrs = new SimpleAttributeSet();
+        SimpleAttributeSet fontePadrao = new SimpleAttributeSet();
+        SimpleAttributeSet fontePreta = new SimpleAttributeSet();
+        SimpleAttributeSet fonteVermelha = new SimpleAttributeSet();
         SimpleAttributeSet negritoAttrs = new SimpleAttributeSet();
 
-        StyleConstants.setForeground(azulAttrs, Color.blue);
-        StyleConstants.setForeground(vermelhoAttrs, Color.red);
+        StyleConstants.setForeground(fontePadrao, Color.blue);
+        StyleConstants.setFontFamily(fontePadrao, "Monospaced");
+        
+        StyleConstants.setForeground(fontePreta, Color.black);
+        StyleConstants.setForeground(fonteVermelha, Color.red);
+        
         StyleConstants.setBold(negritoAttrs, true);
+        
         // Apply the AttributeSet to a few blocks of text.
         
         // setchar attr funciona assim: lugar que comeca, depois 
         StyledDocument sdoc = textPaneTeste.getStyledDocument();
-        boolean parar = false;
-        sdoc.setCharacterAttributes(markup.indexOf("begin"), 5, azulAttrs, false);
-        sdoc.setCharacterAttributes(markup.indexOf("end"), 3, azulAttrs, false);
-        sdoc.setCharacterAttributes(40, 9, vermelhoAttrs, false);
-        sdoc.setCharacterAttributes(70, 3, vermelhoAttrs, false);
-        sdoc.setCharacterAttributes(20, 50, negritoAttrs, false);
+        
+        sdoc.setCharacterAttributes(0, markup.length(), fontePadrao, false);
+
+        String palavra = ";";
+        int index = markup.indexOf(palavra);
+        while (index >= 0) {
+            System.out.println(index);
+            sdoc.setCharacterAttributes(index, palavra.length(), fonteVermelha, false);
+            index = markup.indexOf(palavra, index + 1);
+        }
+        palavra = "begin";
+        index = markup.indexOf(palavra);
+        while (index >= 0) {
+            sdoc.setCharacterAttributes(index, palavra.length(), fontePreta, false);
+            index = markup.indexOf(palavra, index + 1);
+        }
+//        
+//        sdoc.setCharacterAttributes(40, 9, vermelhoAttrs, false);
+//        sdoc.setCharacterAttributes(70, 3, vermelhoAttrs, false);
+//        sdoc.setCharacterAttributes(20, 50, negritoAttrs, false);
         
 //        sdoc.setCharacterAttributes(14, 29, vermelhoAttrs, false);
         //JScrollPane scroll3 = new JScrollPane(textPaneTeste);
