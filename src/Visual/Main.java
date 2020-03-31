@@ -107,11 +107,11 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
         );
 
         Panel.addTab("Lexical Items", jPanel1);
@@ -125,11 +125,11 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
         );
 
         Panel.addTab("Symbol Table", jPanel2);
@@ -225,11 +225,11 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addGap(2, 2, 2)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -275,15 +275,48 @@ public class Main extends javax.swing.JFrame {
         new Credits().setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void colorWords() {
+        String markup = CodeArea.getText();
+        textPaneTeste.setText(markup);
+        SimpleAttributeSet defaultFont = new SimpleAttributeSet();
+        SimpleAttributeSet fontWords = new SimpleAttributeSet();
+
+        StyleConstants.setForeground(defaultFont, Color.blue);
+        StyleConstants.setFontFamily(defaultFont, "Monospaced");
+        StyleConstants.setFontSize(defaultFont, 16);
+        
+        StyleConstants.setForeground(fontWords, Color.black);
+        
+        
+        // Apply the AttributeSet to a few blocks of text.
+        // setchar attr funciona assim: lugar que comeca, depois 
+        StyledDocument sdoc = textPaneTeste.getStyledDocument();
+        
+        sdoc.setCharacterAttributes(0, markup.length(), defaultFont, false);
+
+        String[] words = file.getWords();
+        for (int i = 0; i < words.length; i++) {
+            int index = markup.indexOf(words[i]);
+            while (index >= 0) {
+                System.out.println(index);
+                sdoc.setCharacterAttributes(index, words[i].length(), fontWords, false);
+                index = markup.indexOf(words[i], index + 1);
+            }
+        }            
+            
+    }
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         if (file != null) {
             try {
                 RunResponse response = Dprocessor.runCode(file, CodeArea.getText());
                 StatisticArea.setText(response.getStatistics());
                 AIndexArea.setText(response.getAIndex());
+                
+                colorWords();
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         } else {
             JOptionPane.showMessageDialog(null, "No file opened. Try to open a file first!", "No File Opened", 0);
         }
@@ -324,6 +357,7 @@ public class Main extends javax.swing.JFrame {
 
         StyleConstants.setForeground(fontePadrao, Color.blue);
         StyleConstants.setFontFamily(fontePadrao, "Monospaced");
+        StyleConstants.setFontSize(fontePadrao, 16);
         
         StyleConstants.setForeground(fontePreta, Color.black);
         StyleConstants.setForeground(fonteVermelha, Color.red);
@@ -331,7 +365,6 @@ public class Main extends javax.swing.JFrame {
         StyleConstants.setBold(negritoAttrs, true);
         
         // Apply the AttributeSet to a few blocks of text.
-        
         // setchar attr funciona assim: lugar que comeca, depois 
         StyledDocument sdoc = textPaneTeste.getStyledDocument();
         
