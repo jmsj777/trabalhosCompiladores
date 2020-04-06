@@ -276,10 +276,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void colorWords() {
-        String markup = CodeArea.getText();
+        String markup = file.getFileText();
         textPaneTeste.setText(markup);
         SimpleAttributeSet defaultFont = new SimpleAttributeSet();
         SimpleAttributeSet fontWords = new SimpleAttributeSet();
+        SimpleAttributeSet fontOps = new SimpleAttributeSet();
 
         StyleConstants.setForeground(defaultFont, Color.blue);
         StyleConstants.setFontFamily(defaultFont, "Monospaced");
@@ -287,6 +288,9 @@ public class Main extends javax.swing.JFrame {
         
         StyleConstants.setForeground(fontWords, Color.black);
         
+        StyleConstants.setBold(fontOps, true);
+        StyleConstants.setForeground(fontOps, Color.black);
+
         
         // Apply the AttributeSet to a few blocks of text.
         // setchar attr funciona assim: lugar que comeca, depois 
@@ -294,16 +298,18 @@ public class Main extends javax.swing.JFrame {
         
         sdoc.setCharacterAttributes(0, markup.length(), defaultFont, false);
 
-        String[] words = file.getWords();
+        String[] words = file.getOperators();
         for (int i = 0; i < words.length; i++) {
             int index = markup.indexOf(words[i]);
-            while (index >= 0) {
-                System.out.println(index);
-                sdoc.setCharacterAttributes(index, words[i].length(), fontWords, false);
-                index = markup.indexOf(words[i], index + 1);
+            System.out.print(words[i] + "  ");
+            if(!words[i].equals("")){
+                while (index >= 0) {
+                    sdoc.setCharacterAttributes(index, words[i].length(), fontOps, false);
+                    index = markup.indexOf(words[i]+1, index);
+                }
             }
-        }            
-            
+        }  
+           
     }
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         if (file != null) {
