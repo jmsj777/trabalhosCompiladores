@@ -7,46 +7,45 @@ package File;
 
 /**
  *
- * @author lucas
+ * @author rafha
  */
 public class Tokens {
-  private int colunm;
-  private String classs;
-  private String lexema = null;
-  private int line;
-  private int locat;
+    
+    private int colunm;
+    private String classs;
+    private String lexema = null;
+    private int line;
+    public Tokens(String classs, String lexema, int line, int colunm) {
+        this.colunm = colunm;
+        this.line = line;
+        this.classs = classs;
+        this.lexema = lexema;
+    }
 
-  public Tokens(String classs, String lexema, int line, int colunm)
-  {
-    this.colunm = colunm;
-    this.line = line;
-    this.classs = classs;
-    this.lexema = lexema;
-  }
-
-  public void setlocat(int locat) {
-    this.locat = locat;
-  }
-
-  public Tokens(String classs, String lexema, int line, int colunm, int locat) {
-    this.classs = classs;
-    this.lexema = lexema;
-    this.line = line;
-    this.locat = locat;
-  }
-  public String getLexema() {
-    return this.lexema;
-  }
-  public String getclasss() {
-    return this.classs;
-  }
-  public int getline() {
-    return this.line;
-  }
-  public int getcolunm() {
-    return this.colunm;
-  }
-  public int getlocat() {
-    return this.locat;
-  }
+    public void setlocat(int locat) {
+        this.locat = locat;
+    }
+    private int locat;
+    public Tokens(String classs, String lexema, int line, int colunm, int locat) {
+        this.classs = classs;
+        this.lexema = lexema;
+        this.line = line;
+        this.locat = locat;
+    }
+    public String getLexema() {
+        return lexema;
+    }
+    public String getclasss() {
+        return classs;
+    }
+    public int getline() {
+        return line;
+    }
+    public int getcolunm() {
+        return colunm;
+    }
+    public int getlocat() {
+        return locat;
+    }
+        
 }

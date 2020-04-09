@@ -5,111 +5,112 @@
  */
 package File;
 
+
 /**
  *
- * @author lucas
+ * @author Rafhael
  */
 public class File {
-  private String fileText;
-  private String fileName;
-  private String filePath;
-  private int chars;
-  private int charNoSpaces;
-  private int lines;
-  String AIndex;
-  String[] Words;
-  String[] Identifiers;
-  String[] Numbers;
-  String[] Operators;
+    
+    private String fText;
+    private String fName;
+    private String fPath;
+    private int chars;
+    private int charNoSpaces;
+    private int lines;
+    String AIndex;
+    String Words[];
+    String Identifiers[];
+    String Numbers[];
+    String Operators[];
+    
+    public String getAIndex() {
+        return AIndex;
+    }
 
-  public String getAIndex()
-  {
-    return this.AIndex;
-  }
+    public void setAIndex(String AIndex) {
+        this.AIndex = AIndex;
+    }
+    
+    public String[] getIdentifiers() {
+        return Identifiers;
+    }
 
-  public void setAIndex(String AIndex) {
-    this.AIndex = AIndex;
-  }
+    public void setIdentifiers(String[] Identifiers) {
+        this.Identifiers = Identifiers;
+    }
 
-  public String[] getIdentifiers() {
-    return this.Identifiers;
-  }
+    public String[] getNumbers() {
+        return Numbers;
+    }
 
-  public void setIdentifiers(String[] Identifiers) {
-    this.Identifiers = Identifiers;
-  }
+    public void setNumbers(String[] Numbers) {
+        this.Numbers = Numbers;
+    }
 
-  public String[] getNumbers() {
-    return this.Numbers;
-  }
+    public String[] getOperators() {
+        return Operators;
+    }
 
-  public void setNumbers(String[] Numbers) {
-    this.Numbers = Numbers;
-  }
+    public void setOperators(String[] Operators) {
+        this.Operators = Operators;
+    }
 
-  public String[] getOperators() {
-    return this.Operators;
-  }
+    public int getChars() {
+        return chars;
+    }
 
-  public void setOperators(String[] Operators) {
-    this.Operators = Operators;
-  }
+    public String[] getWords() {
+        return Words;
+    }
 
-  public int getChars() {
-    return this.chars;
-  }
+    public void setWords(String[] Words) {
+        this.Words = Words;
+    }
 
-  public String[] getWords() {
-    return this.Words;
-  }
+    public void setChars(int chars) {
+        this.chars = chars;
+    }
 
-  public void setWords(String[] Words) {
-    this.Words = Words;
-  }
+    public int getCharNoSpaces() {
+        return charNoSpaces;
+    }
 
-  public void setChars(int chars) {
-    this.chars = chars;
-  }
+    public void setCharNoSpaces(int charNoSpaces) {
+        this.charNoSpaces = charNoSpaces;
+    }
 
-  public int getCharNoSpaces() {
-    return this.charNoSpaces;
-  }
+    public int getLines() {
+        return lines;
+    }
 
-  public void setCharNoSpaces(int charNoSpaces) {
-    this.charNoSpaces = charNoSpaces;
-  }
+    public void setLines(int lines) {
+        this.lines = lines;
+    }
 
-  public int getLines() {
-    return this.lines;
-  }
+    public String getFilePath() {
+        return fPath;
+    }
 
-  public void setLines(int lines) {
-    this.lines = lines;
-  }
+    public void setFilePath(String filePath) {
+        this.fPath = filePath;
+    }
 
-  public String getFilePath() {
-    return this.filePath;
-  }
+    public File(String fileTxt, String fileName, String path)
+    {
+        this.fText = fileTxt;
+        this.fName = fileName;
+        this.fPath = path;
+    }
 
-  public void setFilePath(String filePath) {
-    this.filePath = filePath;
-  }
+    public void setfText(String fText) {
+        this.fText = fText;
+    }
+    public String getfText() {
+        return fText;
+    }
 
-  public File(String fileTxt, String fileName, String path)
-  {
-    this.fileText = fileTxt;
-    this.fileName = fileName;
-    this.filePath = path;
-  }
-
-  public void setFileText(String fileText) {
-    this.fileText = fileText;
-  }
-  public String getFileText() {
-    return this.fileText;
-  }
-
-  public String getFileName() {
-    return this.fileName;
-  }
+    public String getFileName() {
+        return fName;
+    }
 }

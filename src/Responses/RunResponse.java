@@ -7,26 +7,25 @@ package Responses;
 
 /**
  *
- * @author lucas
+ * @author Rafhael
  */
 public class RunResponse {
-  private String Statistics;
-  private String AIndex;
+    private String Statistics;
+    private String AIndex;
 
-  public String getStatistics()
-  {
-    return this.Statistics;
-  }
+    public String getStatistics() {
+        return Statistics;
+    }
 
-  public void setStatistics(String Statistics) {
-    this.Statistics = Statistics;
-  }
+    public void setStatistics(String Statistics) {
+        this.Statistics = Statistics;
+    }
 
-  public String getAIndex() {
-    return this.AIndex;
-  }
+    public String getAIndex() {
+        return AIndex;
+    }
 
-  public void setAIndex(String AIndex) {
-    this.AIndex = AIndex;
-  }
+    public void setAIndex(String AIndex) {
+        this.AIndex = AIndex;
+    }
 }

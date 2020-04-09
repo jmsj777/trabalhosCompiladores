@@ -5,421 +5,530 @@
  */
 package Visual;
 
-import File.File;
-import File.FileControler;
 import Processing.DataProcessor;
 import Responses.RunResponse;
+import File.File;
+import File.FileControler;
+import File.Simbols;
+import File.Tokens;
+import LexAnaliser.LexAnaliser;
+import Parser.Parser;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout.ParallelGroup;
-import javax.swing.GroupLayout.SequentialGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 /**
  *
- * @author lucas
+ * @author Rafhael
  */
 public class Main extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Main
-     */
     File file = null;
-  FileControler Freader = new FileControler();
-  DataProcessor Dprocessor = new DataProcessor();
-  private JTextArea AIndexArea;
-  private JTextArea CodeArea;
-  private JTabbedPane Panel;
-  private JScrollPane Scroll;
-  private JTextArea StatisticArea;
-  private JLabel jLabel1;
-  private JMenu jMenu1;
-  private JMenu jMenu2;
-  private JMenu jMenu3;
-  private JMenuBar jMenuBar1;
-  private JMenuItem jMenuItem1;
-  private JMenuItem jMenuItem2;
-  private JMenuItem jMenuItem3;
-  private JMenuItem jMenuItem4;
-  private JMenuItem jMenuItem5;
-  private JMenuItem jMenuItem6;
-  private JPanel jPanel1;
-  private JPanel jPanel2;
-  private JPanel jPanel3;
-  private JScrollPane jScrollPane1;
-  private JScrollPane jScrollPane2;
-  private JScrollPane jScrollPane3;
-  private JScrollPane jScrollPane5;
-  private JTextArea jTextArea1;
-  private JTextPane textPaneTeste;
-  
-  public void setIconImage(Image image)
-  {
-    super.setIconImage(image);
-  }
+    FileControler Freader = new FileControler();
+    DataProcessor Dprocessor = new DataProcessor();
 
+    @Override
+    public void setIconImage(Image image) {
+        super.setIconImage(image); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * Creates new form mai
+     */
     public Main() {
+
         initComponents();
+
     }
-    
-    private void initComponents()
-  {
-    this.Panel = new JTabbedPane();
-    this.Scroll = new JScrollPane();
-    this.CodeArea = new JTextArea();
-    this.jPanel1 = new JPanel();
-    this.jScrollPane1 = new JScrollPane();
-    this.StatisticArea = new JTextArea();
-    this.jPanel2 = new JPanel();
-    this.jScrollPane2 = new JScrollPane();
-    this.AIndexArea = new JTextArea();
-    this.jScrollPane5 = new JScrollPane();
-    this.textPaneTeste = new JTextPane();
-    this.jPanel3 = new JPanel();
-    this.jScrollPane3 = new JScrollPane();
-    this.jTextArea1 = new JTextArea();
-    this.jLabel1 = new JLabel();
-    this.jMenuBar1 = new JMenuBar();
-    this.jMenu1 = new JMenu();
-    this.jMenuItem1 = new JMenuItem();
-    this.jMenuItem2 = new JMenuItem();
-    this.jMenuItem3 = new JMenuItem();
-    this.jMenuItem6 = new JMenuItem();
-    this.jMenu3 = new JMenu();
-    this.jMenuItem5 = new JMenuItem();
-    this.jMenu2 = new JMenu();
-    this.jMenuItem4 = new JMenuItem();
-
-    setDefaultCloseOperation(3);
-    setTitle("Compiladores - Trabalho 02");
-
-    this.CodeArea.setColumns(20);
-    this.CodeArea.setRows(5);
-    this.CodeArea.addCaretListener(new CaretListener() {
-      public void caretUpdate(CaretEvent evt) {
-        Main.this.CodeAreaCaretUpdate(evt);
-      }
-    });
-    this.Scroll.setViewportView(this.CodeArea);
-
-    this.Panel.addTab("Code", this.Scroll);
-
-    this.StatisticArea.setEditable(false);
-    this.StatisticArea.setColumns(20);
-    this.StatisticArea.setRows(5);
-    this.jScrollPane1.setViewportView(this.StatisticArea);
-
-    GroupLayout jPanel1Layout = new GroupLayout(this.jPanel1);
-    this.jPanel1.setLayout(jPanel1Layout);
-    jPanel1Layout.setHorizontalGroup(jPanel1Layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addComponent(this.jScrollPane1, -1, 591, 32767));
-
-    jPanel1Layout.setVerticalGroup(jPanel1Layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addComponent(this.jScrollPane1, -1, 373, 32767));
-
-    this.Panel.addTab("Lexical Items", this.jPanel1);
-
-    this.AIndexArea.setEditable(false);
-    this.AIndexArea.setColumns(20);
-    this.AIndexArea.setRows(5);
-    this.jScrollPane2.setViewportView(this.AIndexArea);
-
-    GroupLayout jPanel2Layout = new GroupLayout(this.jPanel2);
-    this.jPanel2.setLayout(jPanel2Layout);
-    jPanel2Layout.setHorizontalGroup(jPanel2Layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addComponent(this.jScrollPane2, -1, 591, 32767));
-
-    jPanel2Layout.setVerticalGroup(jPanel2Layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addComponent(this.jScrollPane2, -1, 373, 32767));
-
-    this.Panel.addTab("Symbol Table", this.jPanel2);
-
-    this.jScrollPane5.setViewportView(this.textPaneTeste);
-
-    this.Panel.addTab("code2", this.jScrollPane5);
-
-    GroupLayout jPanel3Layout = new GroupLayout(this.jPanel3);
-    this.jPanel3.setLayout(jPanel3Layout);
-    jPanel3Layout.setHorizontalGroup(jPanel3Layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addGap(0, 591, 32767));
-
-    jPanel3Layout.setVerticalGroup(jPanel3Layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addGap(0, 372, 32767));
-
-    this.Panel.addTab("Object Code", this.jPanel3);
-
-    this.jTextArea1.setEditable(false);
-    this.jTextArea1.setColumns(20);
-    this.jTextArea1.setRows(5);
-    this.jScrollPane3.setViewportView(this.jTextArea1);
-
-    this.jLabel1.setText("Messages");
-
-    this.jMenu1.setText("File");
-
-    this.jMenuItem1.setText("Open");
-    this.jMenuItem1.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-          try {
-              Main.this.jMenuItem1ActionPerformed(evt);
-          } catch (IOException ex) {
-              Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-          }
-      }
-    });
-    this.jMenu1.add(this.jMenuItem1);
-
-    this.jMenuItem2.setText("Save");
-    this.jMenuItem2.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        Main.this.jMenuItem2ActionPerformed(evt);
-      }
-    });
-    this.jMenu1.add(this.jMenuItem2);
-
-    this.jMenuItem3.setText("Close");
-    this.jMenuItem3.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        Main.this.jMenuItem3ActionPerformed(evt);
-      }
-    });
-    this.jMenu1.add(this.jMenuItem3);
-
-    this.jMenuItem6.setText("Test");
-    this.jMenuItem6.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        Main.this.jMenuItem6ActionPerformed(evt);
-      }
-    });
-    this.jMenu1.add(this.jMenuItem6);
-
-    this.jMenuBar1.add(this.jMenu1);
-
-    this.jMenu3.setText("Run");
-
-    this.jMenuItem5.setText("Run");
-    this.jMenuItem5.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        Main.this.jMenuItem5ActionPerformed(evt);
-      }
-    });
-    this.jMenu3.add(this.jMenuItem5);
-
-    this.jMenuBar1.add(this.jMenu3);
-
-    this.jMenu2.setText("Help");
-
-    this.jMenuItem4.setText("About us");
-    this.jMenuItem4.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        Main.this.jMenuItem4ActionPerformed(evt);
-      }
-    });
-    this.jMenu2.add(this.jMenuItem4);
-
-    this.jMenuBar1.add(this.jMenu2);
-
-    setJMenuBar(this.jMenuBar1);
-
-    GroupLayout layout = new GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addGroup(layout
-      .createSequentialGroup()
-      .addContainerGap()
-      .addGroup(layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addComponent(this.jScrollPane3)
-      .addGroup(layout
-      .createSequentialGroup()
-      .addComponent(this.jLabel1)
-      .addGap(0, 0, 32767)))
-      .addContainerGap())
-      .addComponent(this.Panel));
-
-    layout.setVerticalGroup(layout
-      .createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addGroup(layout
-      .createSequentialGroup()
-      .addComponent(this.Panel, -2, 400, -2)
-      .addGap(17, 17, 17)
-      .addComponent(this.jLabel1)
-      .addGap(2, 2, 2)
-      .addComponent(this.jScrollPane3, -2, 150, -2)
-      .addContainerGap(-1, 32767)));
-
-    pack();
-  }
-    
-    private void jMenuItem1ActionPerformed(ActionEvent evt) throws IOException {
-    this.file = this.Freader.getFile(this);
-    if (this.file != null)
-      this.CodeArea.setText(this.file.getFileText());
-  }
-
-  private void jMenuItem2ActionPerformed(ActionEvent evt)
-  {
-    if (this.file != null)
-      try {
-        this.Freader.saveFile(this.file, this.CodeArea.getText());
-      } catch (IOException ex) {
-        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-      }
-  }
-
-  private void jMenuItem3ActionPerformed(ActionEvent evt)
-  {
-    this.file = null;
-    this.CodeArea.setText("");
-  }
-
-  private void jMenuItem4ActionPerformed(ActionEvent evt) {
-    new Credits().setVisible(true);
-  }
-
-  private void colorWords() {
-    String markup = this.CodeArea.getText();
-    this.textPaneTeste.setText(markup);
-    SimpleAttributeSet defaultFont = new SimpleAttributeSet();
-    SimpleAttributeSet fontWords = new SimpleAttributeSet();
-
-    StyleConstants.setForeground(defaultFont, Color.blue);
-    StyleConstants.setFontFamily(defaultFont, "Monospaced");
-    StyleConstants.setFontSize(defaultFont, 16);
-
-    StyleConstants.setForeground(fontWords, Color.black);
-
-    StyledDocument sdoc = this.textPaneTeste.getStyledDocument();
-
-    sdoc.setCharacterAttributes(0, markup.length(), defaultFont, false);
-
-    String[] words = this.file.getWords();
-    for (int i = 0; i < words.length; i++) {
-      int index = markup.indexOf(words[i]);
-      while (index >= 0) {
-        System.out.println(index);
-        sdoc.setCharacterAttributes(index, words[i].length(), fontWords, false);
-        index = markup.indexOf(words[i], index + 1);
-      }
-    }
-  }
-
-  private void jMenuItem5ActionPerformed(ActionEvent evt) {
-    if (this.file != null) {
-      try {
-        RunResponse response = this.Dprocessor.runCode(this.file, this.CodeArea.getText());
-
-        colorWords();
-      } catch (IOException ex) {
-        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    }
-    else
-      JOptionPane.showMessageDialog(null, "No file opened. Try to open a file first!", "No File Opened", 0);
-  }
-
-  private void jMenuItem6ActionPerformed(ActionEvent evt)
-  {
-    String markup = "program Fatorial;\nvar\n   N, F: integer;\nfunction Fat(N : integer) : integer;\nbegin\n   if (N = 0) or (N = 1) then\n       begin\n           Fat := 1;\n       end\n   else\n       begin\n           Fat := N * Fat(N – 1);\n       end;\nend;\n\nbegin\n   N := 0;\n   read( N );\n   if N >= 0 then begin\n       F := Fat(N);\n   end;\n   write( F );\nend.\n";
-
-    this.textPaneTeste.setText(markup);
-
-    SimpleAttributeSet fontePadrao = new SimpleAttributeSet();
-    SimpleAttributeSet fontePreta = new SimpleAttributeSet();
-    SimpleAttributeSet fonteVermelha = new SimpleAttributeSet();
-    SimpleAttributeSet negritoAttrs = new SimpleAttributeSet();
-
-    StyleConstants.setForeground(fontePadrao, Color.blue);
-    StyleConstants.setFontFamily(fontePadrao, "Monospaced");
-    StyleConstants.setFontSize(fontePadrao, 16);
-
-    StyleConstants.setForeground(fontePreta, Color.black);
-    StyleConstants.setForeground(fonteVermelha, Color.red);
-
-    StyleConstants.setBold(negritoAttrs, true);
-
-    StyledDocument sdoc = this.textPaneTeste.getStyledDocument();
-
-    sdoc.setCharacterAttributes(0, markup.length(), fontePadrao, false);
-
-    String palavra = ";";
-    int index = markup.indexOf(palavra);
-    while (index >= 0) {
-      System.out.println(index);
-      sdoc.setCharacterAttributes(index, palavra.length(), fonteVermelha, false);
-      index = markup.indexOf(palavra, index + 1);
-    }
-    palavra = "begin";
-    index = markup.indexOf(palavra);
-    while (index >= 0) {
-      sdoc.setCharacterAttributes(index, palavra.length(), fontePreta, false);
-      index = markup.indexOf(palavra, index + 1);
-    }
-  }
-
-  private void CodeAreaCaretUpdate(CaretEvent evt)
-  {
-  }
 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
-     *//*
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Panel = new javax.swing.JTabbedPane();
+        Scroll = new javax.swing.JScrollPane();
+        CodeArea = new javax.swing.JTextPane();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        itens = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        simbolsT = new javax.swing.JTable();
+        MessageField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem17 = new javax.swing.JMenuItem();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Compiladores - Trabalho 01");
+        setIconImage(new ImageIcon(
+            System.getProperty("user.dir") +
+            "/src/Images/icon.png"
+        ).getImage());
+
+        Scroll.setViewportView(CodeArea);
+
+        Panel.addTab("Code", Scroll);
+
+        itens.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Position", "Value", "Class"
+            }
+        ));
+        jScrollPane4.setViewportView(itens);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+        );
+
+        Panel.addTab("Lexical Items", jPanel1);
+
+        simbolsT.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Lexeme", "Category", "Type", "Address"
+            }
+        ));
+        jScrollPane5.setViewportView(simbolsT);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+        );
+
+        Panel.addTab("Symbol Table", jPanel2);
+
+        MessageField.setEditable(false);
+
+        jLabel1.setText("Message");
+
+        jMenu1.setText("File");
+
+        jMenuItem1.setText("Open");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Save");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Close");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem13.setText("New");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem13);
+
+        jMenuItem14.setText("Save all");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem14);
+
+        jMenuItem15.setText("Print");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem15);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu4.setText("Edit");
+
+        jMenuItem6.setText("cut");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem6);
+
+        jMenuItem7.setText("copy");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem7);
+
+        jMenuItem8.setText("paste");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem8);
+
+        jMenuItem9.setText("clean");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem9);
+
+        jMenuItem10.setText("select all");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem10);
+
+        jMenuItem11.setText("search");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem11);
+
+        jMenuItem12.setText("replace");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem12);
+
+        jMenuBar1.add(jMenu4);
+
+        jMenu3.setText("Run");
+
+        jMenuItem5.setText("Run");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem5);
+
+        jMenuItem16.setText("Compile");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem16);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu5.setText("Window");
+
+        jMenuItem17.setText("Cascade");
+        jMenu5.add(jMenuItem17);
+
+        jMenuItem18.setText("Side by Side");
+        jMenu5.add(jMenuItem18);
+
+        jMenuItem19.setText("Orgazine all");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem19ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem19);
+
+        jMenuBar1.add(jMenu5);
+
+        jMenu2.setText("Help");
+
+        jMenuItem4.setText("Credits");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(MessageField, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(Panel, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(Panel, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MessageField, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-*/
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        file = Freader.getFile(this);
+        if (this.file != null)
+            CodeArea.setText(file.getfText());
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if (file != null) {
+            try {
+                Freader.saveFile(file, CodeArea.getText());
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            file = Freader.newFile(this, CodeArea.getText());
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        file = null;
+        CodeArea.setText("");
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        new Credits().setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        if (file == null) {
+            file = Freader.newFile(this, CodeArea.getText());
+        }
+        try {
+            RunResponse response = Dprocessor.runCode(file, CodeArea.getText());
+            MessageField.setText("");
+            LexAnaliser analis = new LexAnaliser(CodeArea.getText() + "\n");
+            ArrayList<Tokens> tokenL = new ArrayList<>(analis.getTokens());
+            ArrayList<Simbols> simbols = analis.getSimbols();
+            DefaultTableModel lexicalItems = (DefaultTableModel) itens.getModel();
+            DefaultTableModel simbolTables = (DefaultTableModel) simbolsT.getModel();
+            MessageField.setText(analis.getError());
+            lexicalItems.setRowCount(0);
+            simbolTables.setRowCount(0);
+            MessageField.setText("");
+            for (int i = 0; i < tokenL.size(); i++) {
+                Object[] data = {tokenL.get(i).getline(), tokenL.get(i).getclasss(), tokenL.get(i).getLexema()};
+                lexicalItems.addRow(data);
+            }
+
+            Parser sintatic = new Parser(tokenL, simbols, analis.getError());
+            MessageField.setText(sintatic.getEmsg());
+            for (int i = 0; i < sintatic.getSimbols().size(); i++) {
+                Object[] data = {sintatic.getSimbols().get(i).getlex(), sintatic.getSimbols().get(i).getcat(), sintatic.getSimbols().get(i).gettype(), sintatic.getSimbols().get(i).getlocat()};
+                simbolTables.addRow(data);
+            }
+
+            // comeco da parte de colorir palavras
+            String markup = this.CodeArea.getText();
+
+            //atributos para fonte padrao!
+            SimpleAttributeSet defaultFont = new SimpleAttributeSet();
+            StyleConstants.setForeground(defaultFont, Color.blue);
+            StyleConstants.setFontFamily(defaultFont, "Monospaced");
+            StyleConstants.setFontSize(defaultFont, 16);
+
+            //atributos para palavras
+            SimpleAttributeSet fontWords = new SimpleAttributeSet();
+            StyleConstants.setForeground(fontWords, Color.BLACK);
+            StyleConstants.setBold(fontWords, true);
+
+            // atributos para operadores
+            SimpleAttributeSet fontOperators = new SimpleAttributeSet();
+            StyleConstants.setForeground(fontOperators, Color.red);
+            StyleConstants.setBold(fontOperators, true);
+
+            // atributos para identificadores
+            SimpleAttributeSet fontIdentifiers = new SimpleAttributeSet();
+            StyleConstants.setForeground(fontIdentifiers, Color.red);
+
+            // atributos para numeros
+            SimpleAttributeSet fontNumbers = new SimpleAttributeSet();
+            StyleConstants.setForeground(fontNumbers, Color.green);
+
+            StyledDocument sdoc = this.CodeArea.getStyledDocument();
+
+            sdoc.setCharacterAttributes(0, markup.length(), defaultFont, false);
+
+            ArrayList<String> reservedWords = new ArrayList<>(Arrays.asList("program", "begin", "end", "var", "procedure", "function", "for", "repeat", "while", "do", "if", "then", "else", "or", "and", "not", "untill", "to"));
+            reservedWords.forEach((word) -> {
+                int index = markup.indexOf(word);
+                while (index >= 0) {
+                    char lim1, lim2;
+                    
+                    try{ lim1 = markup.charAt(index-1);
+                    } catch (Exception e) { lim1 = markup.charAt(index); }
+                    
+                    try{ lim2 = markup.charAt(index+word.length());
+                    } catch (Exception e) { lim2 = markup.charAt(index+word.length()-1); }
+
+                    if((lim1 == ' ' || lim1 == '\n' || lim1 == '\t') || (lim2 == ' ' || lim2 == '\n'|| lim2 == '\t')){
+                        sdoc.setCharacterAttributes(index, word.length(), fontWords, false);
+                    }
+                    index = markup.indexOf(word, index + 1);
+                }
+            });
+            
+            ArrayList<String> operators = new ArrayList<>(Arrays.asList(",", ";", ":", ":=",  "<", ">", "<=", ">=", "<>", "\\", "*", "+", "-", "(", ")"));
+            operators.forEach((item) -> {
+                int index = markup.indexOf(item);
+                while (index >= 0) {
+                    sdoc.setCharacterAttributes(index, item.length(), fontOperators, false);
+                    index = markup.indexOf(item, index + 1);
+                }
+            });
+
+            /*String[] numbers = this.file.getNumbers();
+                for (int i = 0; i < numbers.length; i++) {
+                    int index = markup.indexOf(numbers[i]);
+                    System.out.println("number:" + numbers[i]);
+                    while (index >= 0) {
+                        System.out.println("interval of indexes: " + index + "  " + numbers[i].length());
+                        sdoc.setCharacterAttributes(index, numbers[i].length(), fontNumbers, false);
+                        index = markup.indexOf(numbers[i], index + 1);
+                    }
+                }*/
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -446,25 +555,9 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
-        try
-    {
-      for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-        if ("Nimbus".equals(info.getName())) {
-          UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-    }
-    catch (ClassNotFoundException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (UnsupportedLookAndFeelException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-    }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
@@ -473,5 +566,42 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane CodeArea;
+    private javax.swing.JTextField MessageField;
+    private javax.swing.JTabbedPane Panel;
+    private javax.swing.JScrollPane Scroll;
+    private javax.swing.JTable itens;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable simbolsT;
     // End of variables declaration//GEN-END:variables
+
 }
