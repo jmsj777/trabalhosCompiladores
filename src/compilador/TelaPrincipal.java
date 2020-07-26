@@ -443,7 +443,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPaneEdicao.addTab("Tabela de Símbolos", jPanel5);
@@ -451,6 +451,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jTable3.setModel(GlazedListsSwing.eventTableModel(codigoMepa, new MepaTableFormat()));
         jTable3.setCellSelectionEnabled(true);
         jScrollPane5.setViewportView(jTable3);
+        jTable3.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         jTableMemoria.setModel(GlazedListsSwing.eventTableModel(memoria, new MemoriaTableFormat()));
         jTableMemoria.setCellSelectionEnabled(true);

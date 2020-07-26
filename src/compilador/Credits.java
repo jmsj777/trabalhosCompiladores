@@ -52,10 +52,10 @@ public class Credits extends javax.swing.JFrame {
 
         jLabel1.setBackground(new java.awt.Color(0, 0, 0));
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Trabalho 02 - Compiladores");
+        jLabel1.setText("Work 02 - Syntax analysis");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Integrantes do projeto:");
+        jLabel2.setText("Project Members:");
 
         jLabel3.setText("        Rafhael Menezes Braga");
 
