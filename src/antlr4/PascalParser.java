@@ -1,9 +1,9 @@
 // Generated from Pascal.g4 by ANTLR 4.8
 
 package antlr4;
+import acoes.Acoes;
 
-import Model.Token;
-    
+import java.lang.reflect.InvocationTargetException;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -114,7 +114,20 @@ public class PascalParser extends Parser {
 	public ATN getATN() { return _ATN; }
 
 
-	    Acoes acoes = new Acoes(new Token());
+	Acoes acoes = new Acoes();
+	public Acoes getAcoes() {
+	    return acoes;
+	}
+
+	public static void call(Object object, String acao) {
+	    try {
+	        object.getClass().getDeclaredMethod(acao).invoke(object);
+	    } catch (NoSuchMethodException e) {
+	    } catch (IllegalAccessException e) {
+	    } catch (IllegalArgumentException e) {
+	    } catch (InvocationTargetException e) {;
+	    }
+	}
 
 	public PascalParser(TokenStream input) {
 		super(input);
@@ -151,14 +164,14 @@ public class PascalParser extends Parser {
 			match(PROGRAM);
 			setState(53);
 			match(ID);
-			acoes.A01();
+			call(acoes, "A01");
 			setState(55);
 			match(T__0);
 			setState(56);
 			corpo();
 			setState(57);
 			match(T__1);
-			acoes.A45();
+			call(acoes, "A45");
 			}
 		}
 		catch (RecognitionException re) {
@@ -230,10 +243,10 @@ public class PascalParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			acoes.A44();
+			call(acoes, "A44");
 			setState(70);
 			bloco();
-			acoes.A46();
+			call(acoes, "A46");
 			}
 		}
 		catch (RecognitionException re) {
@@ -399,7 +412,7 @@ public class PascalParser extends Parser {
 			match(T__2);
 			setState(90);
 			tipo();
-			acoes.A02();
+			call(acoes, "A02");
 			setState(92);
 			match(T__0);
 			}
@@ -489,7 +502,7 @@ public class PascalParser extends Parser {
 			{
 			setState(97);
 			match(ID);
-			acoes.A03();
+			call(acoes, "A03");
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(106);
@@ -509,7 +522,7 @@ public class PascalParser extends Parser {
 					match(T__3);
 					setState(102);
 					match(ID);
-					acoes.A03();
+					call(acoes, "A03");
 					}
 					} 
 				}
@@ -621,7 +634,7 @@ public class PascalParser extends Parser {
 			match(PROCEDURE);
 			setState(114);
 			match(ID);
-			acoes.A04();
+			call(acoes, "A04");
 			setState(117);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -632,12 +645,12 @@ public class PascalParser extends Parser {
 				}
 			}
 
-			acoes.A48();
+			call(acoes, "A48");
 			setState(120);
 			match(T__0);
 			setState(121);
 			corpo();
-			acoes.A56();
+			call(acoes, "A56");
 			setState(123);
 			match(T__0);
 			}
@@ -690,7 +703,7 @@ public class PascalParser extends Parser {
 			match(FUNCTION);
 			setState(126);
 			match(ID);
-			acoes.A05();
+			call(acoes, "A05");
 			setState(129);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -701,17 +714,17 @@ public class PascalParser extends Parser {
 				}
 			}
 
-			acoes.A48();
+			call(acoes, "A48");
 			setState(132);
 			match(T__2);
 			setState(133);
 			tipo();
-			acoes.A47();
+			call(acoes, "A47");
 			setState(135);
 			match(T__0);
 			setState(136);
 			corpo();
-			acoes.A56();
+			call(acoes, "A56");
 			setState(138);
 			match(T__0);
 			}
@@ -826,7 +839,7 @@ public class PascalParser extends Parser {
 				match(T__2);
 				setState(150);
 				tipo();
-				acoes.A06();
+				call(acoes, "A06");
 				}
 				break;
 			case 2:
@@ -838,7 +851,7 @@ public class PascalParser extends Parser {
 				match(T__2);
 				setState(155);
 				tipo();
-				acoes.A06();
+				call(acoes, "A06");
 				setState(157);
 				match(T__0);
 				setState(158);
@@ -895,7 +908,7 @@ public class PascalParser extends Parser {
 			{
 			setState(163);
 			match(ID);
-			acoes.A07();
+			call(acoes, "A07");
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(172);
@@ -915,7 +928,7 @@ public class PascalParser extends Parser {
 					match(T__3);
 					setState(168);
 					match(ID);
-					acoes.A07();
+					call(acoes, "A07");
 					}
 					} 
 				}
@@ -973,7 +986,7 @@ public class PascalParser extends Parser {
 			{
 			setState(176);
 			match(ID);
-			acoes.A08();
+			call(acoes, "A08");
 			}
 			_ctx.stop = _input.LT(-1);
 			setState(185);
@@ -993,7 +1006,7 @@ public class PascalParser extends Parser {
 					match(T__3);
 					setState(181);
 					match(ID);
-					acoes.A08();
+					call(acoes, "A08");
 					}
 					} 
 				}
@@ -1056,14 +1069,14 @@ public class PascalParser extends Parser {
 				{
 				setState(189);
 				match(STRING);
-				acoes.A59();
+				call(acoes, "A59");
 				}
 				break;
 			case ID:
 				{
 				setState(191);
 				match(ID);
-				acoes.A09();
+				call(acoes, "A09");
 				}
 				break;
 			default:
@@ -1091,7 +1104,7 @@ public class PascalParser extends Parser {
 						match(T__3);
 						setState(197);
 						match(STRING);
-						acoes.A59();
+						call(acoes, "A59");
 						}
 						break;
 					case 2:
@@ -1104,7 +1117,7 @@ public class PascalParser extends Parser {
 						match(T__3);
 						setState(201);
 						match(ID);
-						acoes.A09();
+						call(acoes, "A09");
 						}
 						break;
 					}
@@ -1267,7 +1280,7 @@ public class PascalParser extends Parser {
 				exp_write(0);
 				setState(224);
 				match(T__5);
-				acoes.A61();
+				call(acoes, "A61");
 				}
 				break;
 			case 4:
@@ -1277,22 +1290,22 @@ public class PascalParser extends Parser {
 				match(FOR);
 				setState(228);
 				match(ID);
-				acoes.A57();
+				call(acoes, "A57");
 				setState(230);
 				match(T__6);
 				setState(231);
 				expressao(0);
-				acoes.A11();
+				call(acoes, "A11");
 				setState(233);
 				match(TO);
 				setState(234);
 				expressao(0);
-				acoes.A12();
+				call(acoes, "A12");
 				setState(236);
 				match(DO);
 				setState(237);
 				bloco();
-				acoes.A13();
+				call(acoes, "A13");
 				}
 				break;
 			case 5:
@@ -1300,14 +1313,14 @@ public class PascalParser extends Parser {
 				{
 				setState(240);
 				match(REPEAT);
-				acoes.A14();
+				call(acoes, "A14");
 				setState(242);
 				sentenca();
 				setState(243);
 				match(UNTIL);
 				setState(244);
 				expressao_logica(0);
-				acoes.A15();
+				call(acoes, "A15");
 				}
 				break;
 			case 6:
@@ -1315,15 +1328,15 @@ public class PascalParser extends Parser {
 				{
 				setState(247);
 				match(WHILE);
-				acoes.A16();
+				call(acoes, "A16");
 				setState(249);
 				expressao_logica(0);
-				acoes.A17();
+				call(acoes, "A17");
 				setState(251);
 				match(DO);
 				setState(252);
 				bloco();
-				acoes.A18();
+				call(acoes, "A18");
 				}
 				break;
 			case 7:
@@ -1333,12 +1346,12 @@ public class PascalParser extends Parser {
 				match(IF);
 				setState(256);
 				expressao_logica(0);
-				acoes.A19();
+				call(acoes, "A19");
 				setState(258);
 				match(THEN);
 				setState(259);
 				bloco();
-				acoes.A20();
+				call(acoes, "A20");
 				setState(262);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -1349,7 +1362,7 @@ public class PascalParser extends Parser {
 					}
 				}
 
-				acoes.A21();
+				call(acoes, "A21");
 				}
 				break;
 			case 8:
@@ -1357,12 +1370,12 @@ public class PascalParser extends Parser {
 				{
 				setState(266);
 				match(ID);
-				acoes.A49();
+				call(acoes, "A49");
 				setState(268);
 				match(T__6);
 				setState(269);
 				expressao(0);
-				acoes.A22();
+				call(acoes, "A22");
 				}
 				break;
 			case 9:
@@ -1370,7 +1383,7 @@ public class PascalParser extends Parser {
 				{
 				setState(272);
 				match(ID);
-				acoes.A50();
+				call(acoes, "A50");
 				setState(275);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -1381,7 +1394,7 @@ public class PascalParser extends Parser {
 					}
 				}
 
-				acoes.A23();
+				call(acoes, "A23");
 				}
 				break;
 			}
@@ -1495,7 +1508,7 @@ public class PascalParser extends Parser {
 			{
 			setState(293);
 			match(ELSE);
-			acoes.A25();
+			call(acoes, "A25");
 			setState(295);
 			bloco();
 			}
@@ -1570,7 +1583,7 @@ public class PascalParser extends Parser {
 					match(OR);
 					setState(302);
 					termo_logico(0);
-					acoes.A26();
+					call(acoes, "A26");
 					}
 					} 
 				}
@@ -1650,7 +1663,7 @@ public class PascalParser extends Parser {
 					match(AND);
 					setState(315);
 					fator_logico();
-					acoes.A27();
+					call(acoes, "A27");
 					}
 					} 
 				}
@@ -1730,7 +1743,7 @@ public class PascalParser extends Parser {
 				match(NOT);
 				setState(329);
 				fator_logico();
-				acoes.A28();
+				call(acoes, "A28");
 				}
 				break;
 			case 4:
@@ -1738,7 +1751,7 @@ public class PascalParser extends Parser {
 				{
 				setState(332);
 				match(TRUE);
-				acoes.A29();
+				call(acoes, "A29");
 				}
 				break;
 			case 5:
@@ -1746,7 +1759,7 @@ public class PascalParser extends Parser {
 				{
 				setState(334);
 				match(FALSE);
-				acoes.A30();
+				call(acoes, "A30");
 				}
 				break;
 			}
@@ -1805,7 +1818,7 @@ public class PascalParser extends Parser {
 				match(EQ);
 				setState(340);
 				expressao(0);
-				acoes.A31();
+				call(acoes, "A31");
 				}
 				break;
 			case 2:
@@ -1817,7 +1830,7 @@ public class PascalParser extends Parser {
 				match(GT);
 				setState(345);
 				expressao(0);
-				acoes.A32();
+				call(acoes, "A32");
 				}
 				break;
 			case 3:
@@ -1829,7 +1842,7 @@ public class PascalParser extends Parser {
 				match(GE);
 				setState(350);
 				expressao(0);
-				acoes.A33();
+				call(acoes, "A33");
 				}
 				break;
 			case 4:
@@ -1841,7 +1854,7 @@ public class PascalParser extends Parser {
 				match(LT);
 				setState(355);
 				expressao(0);
-				acoes.A34();
+				call(acoes, "A34");
 				}
 				break;
 			case 5:
@@ -1853,7 +1866,7 @@ public class PascalParser extends Parser {
 				match(LE);
 				setState(360);
 				expressao(0);
-				acoes.A35();
+				call(acoes, "A35");
 				}
 				break;
 			case 6:
@@ -1865,7 +1878,7 @@ public class PascalParser extends Parser {
 				match(NE);
 				setState(365);
 				expressao(0);
-				acoes.A36();
+				call(acoes, "A36");
 				}
 				break;
 			}
@@ -1945,7 +1958,7 @@ public class PascalParser extends Parser {
 						match(ADD);
 						setState(375);
 						termo(0);
-						acoes.A37();
+						call(acoes, "A37");
 						}
 						break;
 					case 2:
@@ -1958,7 +1971,7 @@ public class PascalParser extends Parser {
 						match(SUB);
 						setState(380);
 						termo(0);
-						acoes.A38();
+						call(acoes, "A38");
 						}
 						break;
 					}
@@ -2045,7 +2058,7 @@ public class PascalParser extends Parser {
 						match(MUL);
 						setState(393);
 						fator();
-						acoes.A39();
+						call(acoes, "A39");
 						}
 						break;
 					case 2:
@@ -2058,7 +2071,7 @@ public class PascalParser extends Parser {
 						match(DIV);
 						setState(398);
 						fator();
-						acoes.A40();
+						call(acoes, "A40");
 						}
 						break;
 					}
@@ -2116,7 +2129,7 @@ public class PascalParser extends Parser {
 				{
 				setState(406);
 				match(ID);
-				acoes.A55();
+				call(acoes, "A55");
 				}
 				break;
 			case 2:
@@ -2124,10 +2137,10 @@ public class PascalParser extends Parser {
 				{
 				setState(408);
 				match(ID);
-				acoes.A60();
+				call(acoes, "A60");
 				setState(410);
 				argumentos();
-				acoes.A42();
+				call(acoes, "A42");
 				}
 				break;
 			case 3:
@@ -2135,7 +2148,7 @@ public class PascalParser extends Parser {
 				{
 				setState(413);
 				match(INT);
-				acoes.A41();
+				call(acoes, "A41");
 				}
 				break;
 			case 4:

@@ -1,10 +1,9 @@
 // Generated from Pascal.g4 by ANTLR 4.8
 
 package antlr4;
+import acoes.Acoes;
 
-import Acoes;
-import Model.Token;
-    
+import java.lang.reflect.InvocationTargetException;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;

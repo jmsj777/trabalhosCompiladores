@@ -6,91 +6,103 @@ grammar Pascal ;
 
 @lexer::header {
 package antlr4;
-
 }
-@parser::header{
+@parser::header {
 package antlr4;
+import acoes.Acoes;
 
-import Acoes;
-import Model.Token;
-    
+import java.lang.reflect.InvocationTargetException;
 }
+
 
 @parser::members {
-    Acoes acoes = new Acoes(new Token);
+Acoes acoes = new Acoes();
+public Acoes getAcoes() {
+    return acoes;
 }
-programa : PROGRAM ID {acoes.A01();} ';' corpo '.' {acoes.A45();} ;
-corpo : declara? rotina* {acoes.A44();} bloco {acoes.A46();} ;
+
+public static void call(Object object, String acao) {
+    try {
+        object.getClass().getDeclaredMethod(acao).invoke(object);
+    } catch (NoSuchMethodException e) {
+    } catch (IllegalAccessException e) {
+    } catch (IllegalArgumentException e) {
+    } catch (InvocationTargetException e) {;
+    }
+}
+}
+programa : PROGRAM ID {call(acoes, "A01");} ';' corpo '.' {call(acoes, "A45");} ;
+corpo : declara? rotina* {call(acoes, "A44");} bloco {call(acoes, "A46");} ;
 bloco : BEGIN sentenca* END ;
 declara : VAR dvar+ ;
-dvar : variaveis ':' tipo {acoes.A02();} ';' ;
+dvar : variaveis ':' tipo {call(acoes, "A02");} ';' ;
 tipo : INTEGER ;
-variaveis : variaveis ',' ID {acoes.A03();}
- | ID {acoes.A03();}
+variaveis : variaveis ',' ID {call(acoes, "A03");}
+ | ID {call(acoes, "A03");}
 ;
 rotina : procedimento
  | funcao
  ;
-procedimento : PROCEDURE ID {acoes.A04();} parametros? {acoes.A48();} ';' corpo {acoes.A56();} ';' ;
-funcao : FUNCTION ID {acoes.A05();} parametros? {acoes.A48();} ':' tipo {acoes.A47();} ';' corpo {acoes.A56();} ';' ;
+procedimento : PROCEDURE ID {call(acoes, "A04");} parametros? {call(acoes, "A48");} ';' corpo {call(acoes, "A56");} ';' ;
+funcao : FUNCTION ID {call(acoes, "A05");} parametros? {call(acoes, "A48");} ':' tipo {call(acoes, "A47");} ';' corpo {call(acoes, "A56");} ';' ;
 parametros : '(' lista_parametros+ ')' ;
-lista_parametros : lista_id ':' tipo {acoes.A06();}
- | lista_id ':' tipo {acoes.A06();} ';' lista_parametros
+lista_parametros : lista_id ':' tipo {call(acoes, "A06");}
+ | lista_id ':' tipo {call(acoes, "A06");} ';' lista_parametros
  ;
-lista_id : lista_id ',' ID {acoes.A07();}
- | ID {acoes.A07();}
+lista_id : lista_id ',' ID {call(acoes, "A07");}
+ | ID {call(acoes, "A07");}
  ;
-var_read : var_read ',' ID {acoes.A08();}
- | ID {acoes.A08();}
+var_read : var_read ',' ID {call(acoes, "A08");}
+ | ID {call(acoes, "A08");}
 ;
-exp_write : exp_write ',' STRING {acoes.A59();}
- | STRING {acoes.A59();}
- | exp_write ',' ID {acoes.A09();}
-| ID {acoes.A09();}
+exp_write : exp_write ',' STRING {call(acoes, "A59");}
+ | STRING {call(acoes, "A59");}
+ | exp_write ',' ID {call(acoes, "A09");}
+| ID {call(acoes, "A09");}
 ;
 sentenca : comando ';' ;
 comando : READ '(' var_read ')'
  | WRITE '(' exp_write ')'
-| WRITELN '(' exp_write ')' {acoes.A61();}
-| FOR ID {acoes.A57();} ':=' expressao {acoes.A11();} TO expressao {acoes.A12();} DO bloco {acoes.A13();}
-| REPEAT {acoes.A14();} sentenca UNTIL expressao_logica {acoes.A15();}
-| WHILE {acoes.A16();} expressao_logica {acoes.A17();} DO bloco {acoes.A18();}
-| IF expressao_logica {acoes.A19();} THEN bloco {acoes.A20();} pfalsa? {acoes.A21();}
-| ID {acoes.A49();} ':=' expressao {acoes.A22();}
-| ID {acoes.A50();} argumentos? {acoes.A23();}
+| WRITELN '(' exp_write ')' {call(acoes, "A61");}
+| FOR ID {call(acoes, "A57");} ':=' expressao {call(acoes, "A11");} TO expressao {call(acoes, "A12");} DO bloco {call(acoes, "A13");}
+| REPEAT {call(acoes, "A14");} sentenca UNTIL expressao_logica {call(acoes, "A15");}
+| WHILE {call(acoes, "A16");} expressao_logica {call(acoes, "A17");} DO bloco {call(acoes, "A18");}
+| IF expressao_logica {call(acoes, "A19");} THEN bloco {call(acoes, "A20");} pfalsa? {call(acoes, "A21");}
+| ID {call(acoes, "A49");} ':=' expressao {call(acoes, "A22");}
+| ID {call(acoes, "A50");} argumentos? {call(acoes, "A23");}
  ;
 argumentos : '(' (expressao (',' expressao)*)? ')' ;
-pfalsa : ELSE {acoes.A25();} bloco ;
-expressao_logica : expressao_logica OR termo_logico {acoes.A26();}
+pfalsa : ELSE {call(acoes, "A25");} bloco ;
+expressao_logica : expressao_logica OR termo_logico {call(acoes, "A26");}
  | termo_logico
 ;
-termo_logico : termo_logico AND fator_logico {acoes.A27();}
+termo_logico : termo_logico AND fator_logico {call(acoes, "A27");}
  | fator_logico
 ;
 fator_logico : relacional
  | '(' expressao_logica ')'
-| NOT fator_logico {acoes.A28();}
-| TRUE {acoes.A29();}
-| FALSE {acoes.A30();}
+| NOT fator_logico {call(acoes, "A28");}
+| TRUE {call(acoes, "A29");}
+| FALSE {call(acoes, "A30");}
 ;
-relacional : expressao '=' expressao {acoes.A31();}
- | expressao '>' expressao {acoes.A32();}
-| expressao '>=' expressao {acoes.A33();}
-| expressao '<' expressao {acoes.A34();}
-| expressao '<=' expressao {acoes.A35();}
-| expressao '<>' expressao {acoes.A36();}
+relacional : expressao '=' expressao {call(acoes, "A31");}
+ | expressao '>' expressao {call(acoes, "A32");}
+| expressao '>=' expressao {call(acoes, "A33");}
+| expressao '<' expressao {call(acoes, "A34");}
+| expressao '<=' expressao {call(acoes, "A35");}
+| expressao '<>' expressao {call(acoes, "A36");}
 ;
-expressao : expressao '+' termo {acoes.A37();}
- | expressao '-' termo {acoes.A38();}
+expressao : expressao '+' termo {call(acoes, "A37");}
+ | expressao '-' termo {call(acoes, "A38");}
 | termo
 ;
-termo : termo '*' fator {acoes.A39();}
- | termo '/' fator {acoes.A40();}
+termo : termo '*' fator {call(acoes, "A39");}
+ | termo '/' fator {call(acoes, "A40");}
  | fator
  ;
-fator : ID {acoes.A55();}
- | ID {acoes.A60();} argumentos {acoes.A42();}
-| INT {acoes.A41();}
+fator : ID {call(acoes, "A55");}
+ | ID {call(acoes, "A60");} argumentos {call(acoes, "A42");}
+| INT {call(acoes, "A41");}
 | '(' expressao ')'
  ;
 // LEXER
