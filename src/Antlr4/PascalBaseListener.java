@@ -1,7 +1,7 @@
 // Generated from Pascal.g4 by ANTLR 4.8
 
-package antlr4;
-import acoes.Acoes;
+package Antlr4;
+import Acoes.Acoes;
 
 import java.lang.reflect.InvocationTargetException;
 

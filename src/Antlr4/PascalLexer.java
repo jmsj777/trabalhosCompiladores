@@ -1,6 +1,6 @@
 // Generated from Pascal.g4 by ANTLR 4.8
 
-package antlr4;
+package Antlr4;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

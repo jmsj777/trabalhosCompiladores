@@ -1,4 +1,4 @@
-package acoes;
+package Acoes;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -22,33 +22,57 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  */
 public class Acoes {
 
-    public RTextScrollPane sp;
-    public RSyntaxTextArea fonte;
+    //public RTextScrollPane sp;
+    //public RSyntaxTextArea fonte;
+    //texto = fonte.getText().toString();
     int nivel;
     TabelaSimbolos tabelaSimbolos;
-    ArrayList<Integer> offsetVariavel = new ArrayList<>();
-    ArrayList<String> rotulosData = new ArrayList<>();
-    public String codigoAssembly = "";
+    ArrayList<Integer> offsetVariavel;
+    ArrayList<String> rotulosData;
+    public String codigoAssembly;
     public int variaveisLocais;
     Registro registroGlobal;
-    int countRotulo = 0;
-    int countParametros = 0;
-    String currentFuncProc = "";
+    int countRotulo;
+    int countParametros;
+    String currentFuncProc;
 
-    int linha = 0;
-    int coluna = 0;
-    int index = 0;
-    int lastLine = 0;
+    int linha;
+    int coluna;
+    int index;
+    int lastLine;
     String texto;
     Lexema lexema;
-    Boolean erro = false;
+    Boolean erro;
     String errorDescription;
-    private ArrayList<String> palavrasReservadas = new ArrayList<>();
-    private ArrayList<Lexema> detTipo = new ArrayList<>();
-    int contadorRotulos = 0;
-    ItemTabela[] table = new ItemTabela[17];
+    private ArrayList<String> palavrasReservadas;
+    private ArrayList<Lexema> detTipo;
+    int contadorRotulos;
+    ItemTabela[] table;
 
     public Acoes() {
+        nivel = 0;
+        offsetVariavel = new ArrayList<>();
+        rotulosData = new ArrayList<>();
+        codigoAssembly = "";
+        variaveisLocais = 0;
+        countRotulo = 0;
+        countParametros = 0;
+        currentFuncProc = "";
+
+        linha = 0;
+        coluna = 0;
+        index = 0;
+        lastLine = 0;
+
+        erro = false;
+        palavrasReservadas = new ArrayList<>();
+        detTipo = new ArrayList<>();
+        contadorRotulos = 0;
+        table = new ItemTabela[17];
+    }
+
+    public String getCodigoAssembly() {
+        return codigoAssembly;
     }
 
     public static void call(Acoes object, String acao) {
@@ -71,62 +95,35 @@ public class Acoes {
         return String.format("@string%d", contadorRotulos);
     }
 
-    public File geraArquivoAsm(){
+    public File geraArquivoAsm() {
         File file = new File("./programa.asm");
-        try{
+        try {
             file.createNewFile();
             FileWriter asm = new FileWriter(file);
             asm.write(codigoAssembly); // colocar a string do assembly aqui
             asm.flush();
             asm.close();
-        }catch(Exception ex){
+        } catch (Exception ex) {
         }
-        
+
         return file;
     }
 
-    public void rodaAsm(){
-        try{
+    public void rodaAsm() {
+        try {
             String caminho = geraArquivoAsm().getAbsolutePath();
             System.out.print(caminho);
             Runtime.getRuntime().exec("nasm -f win32 ./programa.asm -o ./programa.o");
             Runtime.getRuntime().exec("gcc ./programa.o -o ./prog.exe");
-            
+
             String commando = "cmd /c start cmd.exe /C \"programa\"";
             Runtime.getRuntime().exec(commando);
-            
-            
-        }catch(Exception ex){
+
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
-    public void posPrograma() {
-        contadorRotulos =0;
-        offsetVariavel = new ArrayList(); 
-        variaveisLocais=0;
-        countRotulo = 0;
-         nivel = 0;
-         rotulosData = new ArrayList<>();
-        //fcodigoAssembly = "";
-        //textAreaMensagens.setText("");
-        //texto = fonte.getText().toString();
-        //jTableTabelaDeSimbolos.removeAll();
-        table = null;
-        table = new ItemTabela[17];
-        //lexema = analisadorLexico(texto);
-        //programa();
-        //if(!erro)
-        //    textAreaMensagens.setText("Compilado com sucesso!\n");
-        index = 0;
-        linha = 0;
-        coluna = 0;
-        erro = false;
-        //imprimeTabela();
-        rodaAsm();
-        //textAreaAssembly.setText(codigoAssembly);
-    
-    }
+
     public void A01() {
         tabelaSimbolos = new TabelaSimbolos();
         tabelaSimbolos.setTabelaPai(null);
