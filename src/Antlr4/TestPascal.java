@@ -1,3 +1,5 @@
+package Antlr4;
+
 
 /** *
  * Exemplo de integração com o ANTLR
@@ -12,7 +14,7 @@ import org.antlr.v4.runtime.tree.*;
 public class TestPascal {
 
     public static String rodaPrograma(String code) {
-        ANTLRInputStream input = new ANTLRInputStream(code);
+        ANTLRInputStream input = new ANTLRInputStream(code.toLowerCase());
         // Cria um lexer para processar a entrada
         PascalLexer lexer = new PascalLexer(input);
         // Cria um buffer de tokens gerados pelo lexer
@@ -31,9 +33,10 @@ public class TestPascal {
         walker.walk(new PascalAssembly(), tree);
 
         String assembly = parser.getAcoes().getCodigoAssembly();
+        parser.getAcoes().rodaAsm();
         return assembly;
     }
-
+    /*
     public static void main(String[] args) throws Exception {
         // Cria um CharStream que lê a partir da entrada padrão
         String input = "program somar;\n"
@@ -54,4 +57,5 @@ public class TestPascal {
         String assembly = rodaPrograma(input);
         System.out.println(assembly);
     }
+    */
 }

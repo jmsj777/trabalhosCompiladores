@@ -5,7 +5,7 @@
  */
 package Visual;
 
-import ANTLR.pascal;
+import Antlr4.TestPascal;
 import Services.TextLineNumber;
 import Processing.DataProcessor;
 import Responses.RunResponse;
@@ -429,8 +429,9 @@ public class Main extends javax.swing.JFrame {
                 file = Freader.newInstaFile(this, CodeArea.getText());
             }
             try {
-                pascal PSC = new pascal();
-                ASSEMB = PSC.processarCodigo(CodeArea.getText());
+//                pascal PSC = new pascal();
+//                ASSEMB = PSC.processarCodigo(CodeArea.getText());
+                ASSEMB = TestPascal.rodaPrograma(CodeArea.getText());
                 AssembArea.setText(ASSEMB);
                 RunResponse response = Dprocessor.runCode(file, CodeArea.getText());
                 MessageField.setText("");
