@@ -9,7 +9,7 @@ package Model;
  *
  * @author framc
  */
-public class Lexema {
+public class LexItem {
     private String texto;
     private String classe;
     private String descricao;
@@ -43,7 +43,7 @@ public class Lexema {
         this.endereco = endereco;
     }
     
-    public Lexema(String texto, String classe, String descricao, int linha, int coluna){
+    public LexItem(String texto, String classe, String descricao, int linha, int coluna){
         this.texto = texto;
         this.classe = classe;
         this.descricao = descricao;

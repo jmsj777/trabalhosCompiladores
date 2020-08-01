@@ -11,10 +11,10 @@ import java.util.ArrayList;
  *
  * @author Murilo Marcineiro
  */
-public class TabelaSimbolos {
+public class SymbolTable {
     private int memoria;
-    private ArrayList<Registro> registros;
-    private TabelaSimbolos tabelaPai;
+    private ArrayList<Record> registros;
+    private SymbolTable tabelaPai;
     private String rotulo;
     
     public void setRotulo(String rotulo){
@@ -25,11 +25,11 @@ public class TabelaSimbolos {
         return this.rotulo;
     }
 
-    public ArrayList<Registro> getRegistros() {
+    public ArrayList<Record> getRecords() {
         return registros;
     }
 
-    public void addRegistro(Registro registro) {
+    public void addRecord(Record registro) {
         if(this.registros == null)
             this.registros = new ArrayList<>();
         this.registros.add(registro);
@@ -43,51 +43,51 @@ public class TabelaSimbolos {
         this.memoria = memoria;
     }
 
-    public TabelaSimbolos getTabelaPai() {
+    public SymbolTable getTabelaPai() {
         return tabelaPai;
     }
 
-    public void setTabelaPai(TabelaSimbolos tabelaPai) {
+    public void setTabelaPai(SymbolTable tabelaPai) {
         this.tabelaPai = tabelaPai;
     }
 
-    public Registro getEsseRegistro(Registro registro){
+    public Record getEsseRecord(Record registro){
         if(this.registros!=null){
-            for(Registro r : this.registros){
+            for(Record r : this.registros){
                 if(r.getNome().equals(registro.getNome()))
                     return r;
             }
         }
         if(this.tabelaPai!=null){
-            return this.tabelaPai.getEsseRegistro(registro);
+            return this.tabelaPai.getEsseRecord(registro);
         } else {
             return null;
         }
     }
     
-    public boolean temRegistro(Registro registro){
+    public boolean temRecord(Record registro){
         if(registros==null)
             return false;
-        for(Registro r : registros){
+        for(Record r : registros){
             if(registro.getNome().equals(r.getNome()))
                 return true;
         }
         return false;
     }
 
-    public boolean temRegistroTodasTabelas(Registro registro){
+    public boolean temRecordTodasTabelas(Record registro){
         if(this.tabelaPai == null){
-            return this.temRegistro(registro);
+            return this.temRecord(registro);
         } else {
-            return this.temRegistro(registro) || this.tabelaPai.temRegistroTodasTabelas(registro);
+            return this.temRecord(registro) || this.tabelaPai.temRecordTodasTabelas(registro);
         }
     }
     
     
 
-    public int getNumeroRegistroParametro(){
+    public int getNumeroRecordParametro(){
         int n = 0;
-        for (Registro registro : this.registros) {
+        for (Record registro : this.registros) {
             if(registro.getCategoria()!=null && registro.getCategoria().equals("Parametro"))
                 n++;
         }

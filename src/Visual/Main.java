@@ -5,6 +5,7 @@
  */
 package Visual;
 
+import Acoes.Acoes;
 import Antlr4.TestPascal;
 import Services.TextLineNumber;
 import Processing.DataProcessor;
@@ -14,6 +15,7 @@ import File.FileControler;
 import File.Simbols;
 import File.Tokens;
 import LexAnaliser.LexAnaliser;
+import Model.SymbolTable;
 import Parser.Parser;
 import Services.Printer;
 import java.awt.Color;
@@ -111,7 +113,6 @@ public class Main extends javax.swing.JFrame {
         jMenuItemReplace = new javax.swing.JMenuItem();
         jMenuRun = new javax.swing.JMenu();
         jMenuItemRun = new javax.swing.JMenuItem();
-        jMenuItemCompile = new javax.swing.JMenuItem();
         jMenuWindow = new javax.swing.JMenu();
         jMenuItemCascade = new javax.swing.JMenuItem();
         jMenuItemSideBySide = new javax.swing.JMenuItem();
@@ -312,21 +313,13 @@ public class Main extends javax.swing.JFrame {
 
         jMenuRun.setText("Run");
 
-        jMenuItemRun.setText("Run");
+        jMenuItemRun.setText("Compile and Run");
         jMenuItemRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRunActionPerformed(evt);
             }
         });
         jMenuRun.add(jMenuItemRun);
-
-        jMenuItemCompile.setText("Compile");
-        jMenuItemCompile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemCompileActionPerformed(evt);
-            }
-        });
-        jMenuRun.add(jMenuItemCompile);
 
         MainBar.add(jMenuRun);
 
@@ -381,7 +374,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(Panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
+                    .addComponent(Panel, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -429,9 +422,9 @@ public class Main extends javax.swing.JFrame {
                 file = Freader.newInstaFile(this, CodeArea.getText());
             }
             try {
-//                pascal PSC = new pascal();
-//                ASSEMB = PSC.processarCodigo(CodeArea.getText());
-                ASSEMB = TestPascal.rodaPrograma(CodeArea.getText());
+                Acoes acoes = TestPascal.rodaPrograma(CodeArea.getText());
+                ASSEMB = acoes.getasmCode();
+                SymbolTable st = acoes.getSymbolTable();
                 AssembArea.setText(ASSEMB);
                 RunResponse response = Dprocessor.runCode(file, CodeArea.getText());
                 MessageField.setText("");
@@ -547,10 +540,6 @@ public class Main extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jMenuItemPrintActionPerformed
-
-    private void jMenuItemCompileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCompileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemCompileActionPerformed
 
     private void jMenuItemOrganizeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOrganizeAllActionPerformed
         // TODO add your handling code here:
@@ -691,7 +680,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCascade;
     private javax.swing.JMenuItem jMenuItemClean;
     private javax.swing.JMenuItem jMenuItemClose;
-    private javax.swing.JMenuItem jMenuItemCompile;
     private javax.swing.JMenuItem jMenuItemCopy;
     private javax.swing.JMenuItem jMenuItemCredits;
     private javax.swing.JMenuItem jMenuItemCut;

@@ -129,18 +129,10 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRun">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Run"/>
+                <Property name="text" type="java.lang.String" value="Compile and Run"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemRunActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCompile">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Compile"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemCompileActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

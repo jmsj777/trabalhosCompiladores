@@ -5,16 +5,14 @@ package Acoes;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import Model.ItemTabela;
-import Model.Lexema;
-import Model.Registro;
-import Model.TabelaSimbolos;
+import Model.ItemTable;
+import Model.LexItem;
+import Model.Record;
+import Model.SymbolTable;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
  *
@@ -24,55 +22,59 @@ public class Acoes {
 
     //public RTextScrollPane sp;
     //public RSyntaxTextArea fonte;
-    //texto = fonte.getText().toString();
-    int nivel;
-    TabelaSimbolos tabelaSimbolos;
-    ArrayList<Integer> offsetVariavel;
-    ArrayList<String> rotulosData;
-    public String codigoAssembly;
-    public int variaveisLocais;
-    Registro registroGlobal;
-    int countRotulo;
-    int countParametros;
+    //txt = fonte.getText().toString();
+    int level;
+    SymbolTable st;
+    ArrayList<Integer> offsetVar;
+    ArrayList<String> labelData;
+    public String asmCode;
+    public int localVars;
+    Record globalRecord;
+    int ctLabel;
+    int ctParam;
     String currentFuncProc;
 
-    int linha;
-    int coluna;
+    int ln;
+    int col;
     int index;
     int lastLine;
-    String texto;
-    Lexema lexema;
-    Boolean erro;
-    String errorDescription;
-    private ArrayList<String> palavrasReservadas;
-    private ArrayList<Lexema> detTipo;
-    int contadorRotulos;
-    ItemTabela[] table;
+    String txt;
+    LexItem lexItem;
+    Boolean error;
+    String errorDsc;
+    private ArrayList<String> resWords;
+    private ArrayList<LexItem> detType;
+    int ctLavel2;
+    ItemTable[] itemTable;
 
     public Acoes() {
-        nivel = 0;
-        offsetVariavel = new ArrayList<>();
-        rotulosData = new ArrayList<>();
-        codigoAssembly = "";
-        variaveisLocais = 0;
-        countRotulo = 0;
-        countParametros = 0;
+        level = 0;
+        offsetVar = new ArrayList<>();
+        labelData = new ArrayList<>();
+        asmCode = "";
+        localVars = 0;
+        ctLabel = 0;
+        ctParam = 0;
         currentFuncProc = "";
 
-        linha = 0;
-        coluna = 0;
+        ln = 0;
+        col = 0;
         index = 0;
         lastLine = 0;
 
-        erro = false;
-        palavrasReservadas = new ArrayList<>();
-        detTipo = new ArrayList<>();
-        contadorRotulos = 0;
-        table = new ItemTabela[17];
+        error = false;
+        resWords = new ArrayList<>();
+        detType = new ArrayList<>();
+        ctLavel2 = 0;
+        itemTable = new ItemTable[17];
     }
 
-    public String getCodigoAssembly() {
-        return codigoAssembly;
+    public String getasmCode() {
+        return asmCode;
+    }
+
+    public SymbolTable getSymbolTable() {
+        return st;
     }
 
     public static void call(Acoes object, String acao) {
@@ -86,13 +88,13 @@ public class Acoes {
 
     }
 
-    public void insereLinhaArquivo(String linha) {
-        codigoAssembly = codigoAssembly + linha + "\n";
+    public void insereLinhaArquivo(String ln) {
+        asmCode = asmCode + ln + "\n";
     }
 
     public String geradorRotulo() {
-        contadorRotulos++;
-        return String.format("@string%d", contadorRotulos);
+        ctLavel2++;
+        return String.format("@string%d", ctLavel2);
     }
 
     public File geraArquivoAsm() {
@@ -100,7 +102,7 @@ public class Acoes {
         try {
             file.createNewFile();
             FileWriter asm = new FileWriter(file);
-            asm.write(codigoAssembly); // colocar a string do assembly aqui
+            asm.write(asmCode); // colocar a string do assembly aqui
             asm.flush();
             asm.close();
         } catch (Exception ex) {
@@ -125,19 +127,19 @@ public class Acoes {
     }
 
     public void A01() {
-        tabelaSimbolos = new TabelaSimbolos();
-        tabelaSimbolos.setTabelaPai(null);
-        tabelaSimbolos.setRotulo("_main");
-        currentFuncProc = tabelaSimbolos.getRotulo();
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        nivel = 0;
-        registro.setNivel(nivel);
-        registro.setCategoria("Programa principal");
+        st = new SymbolTable();
+        st.setTabelaPai(null);
+        st.setRotulo("_main");
+        currentFuncProc = st.getRotulo();
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        level = 0;
+        rec.setNivel(level);
+        rec.setCategoria("Programa principal");
 
-        offsetVariavel.add(0);
-        registro.setOffset(offsetVariavel.get(nivel));
-        tabelaSimbolos.addRegistro(registro);
+        offsetVar.add(0);
+        rec.setOffset(offsetVar.get(level));
+        st.addRecord(rec);
         insereLinhaArquivo("global _main");
         insereLinhaArquivo("\textern _printf");
         insereLinhaArquivo("\textern _putchar");
@@ -146,48 +148,49 @@ public class Acoes {
     }
 
     public void A03() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (!tabelaSimbolos.temRegistro(registro)) {
-            registro.setCategoria("Variavel");
-            offsetVariavel.set(nivel, offsetVariavel.get(nivel) + 4); //SIZEOF_INT
-            registro.setNivel(nivel);
-            registro.setOffset(offsetVariavel.get(nivel));
-            tabelaSimbolos.addRegistro(registro);
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        System.out.println(lexItem.getTexto());
+        if (!st.temRecord(rec)) {
+            rec.setCategoria("Variavel");
+            offsetVar.set(level, offsetVar.get(level) + 4); //SIZEOF_INT
+            rec.setNivel(level);
+            rec.setOffset(offsetVar.get(level));
+            st.addRecord(rec);
         } else {
             //Erro: identificador já declarado anteriormente
         }
     }
 
     public void A04() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        registro.setRotulo(lexema.getTexto());
-        if (!tabelaSimbolos.temRegistroTodasTabelas(registro)) {
-            nivel++;
-            registro.setNivel(nivel);
-            registro.setCategoria("Procedimento");
-            TabelaSimbolos ts = new TabelaSimbolos();
-            ts.setTabelaPai(tabelaSimbolos);
-            offsetVariavel.add(0);
-//            ts.setRotulo(String.format("rotuloProcedimento%d", countRotulo++));
-            ts.setRotulo(registro.getNome());
-            registro.setTabelaSimbolos(ts);
-            tabelaSimbolos.addRegistro(registro);
-            tabelaSimbolos = ts;
-            currentFuncProc = registro.getNome();
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        rec.setRotulo(lexItem.getTexto());
+        if (!st.temRecordTodasTabelas(rec)) {
+            level++;
+            rec.setNivel(level);
+            rec.setCategoria("Procedimento");
+            SymbolTable ts = new SymbolTable();
+            ts.setTabelaPai(st);
+            offsetVar.add(0);
+//            ts.setRotulo(String.format("rotuloProcedimento%d", ctLabel++));
+            ts.setRotulo(rec.getNome());
+            rec.setSymbolTable(ts);
+            st.addRecord(rec);
+            st = ts;
+            currentFuncProc = rec.getNome();
         }
     }
 
     /*
-    public TabelaSimbolos procuraId(TabelaSimbolos tabelaPai){
-        TabelaSimbolos resultado = new TabelaSimbolos();
+    public SymbolTable procuraId(SymbolTable tabelaPai){
+        SymbolTable resultado = new SymbolTable();
         boolean encontrou = false;
         if(tabelaPai== null){
            resultado = tabelaPai;
         }else{
-            for(Registro r: tabelaPai.getRegistros()){
-                if(r.getNome().equals(lexema.getTexto())){
+            for(Record r: tabelaPai.getRecords()){
+                if(r.getNome().equals(lexItem.getTexto())){
                     resultado = tabelaPai;
                     encontrou = true;
                 }  
@@ -199,58 +202,58 @@ public class Acoes {
         return resultado;
     }
      */
-    public Registro A05() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (!tabelaSimbolos.temRegistroTodasTabelas(registro)) {
-            nivel += 1;
-            registro.setNivel(nivel);
-            registro.setCategoria("Funcao");
-            registro.setRotulo(lexema.getTexto());
-            TabelaSimbolos novaTs = new TabelaSimbolos();
-            novaTs.setTabelaPai(tabelaSimbolos);
-            registro.setTabelaSimbolos(novaTs);
-            tabelaSimbolos.addRegistro(registro);
-//                novaTs.addRegistro(registro);
-            tabelaSimbolos = novaTs;
-            tabelaSimbolos.addRegistro(registro);
-            // Por este motivo, add na acao 56:  tabelaSimbolos = tabelaSimbolos.getTabelaPai();
-            offsetVariavel.add(0);
-            offsetVariavel.set(nivel, offsetVariavel.get(nivel)); //SIZEOF_INT
-            tabelaSimbolos.setRotulo(registro.getNome());
-            currentFuncProc = registro.getNome();
+    public Record A05() {
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        if (!st.temRecordTodasTabelas(rec)) {
+            level += 1;
+            rec.setNivel(level);
+            rec.setCategoria("Funcao");
+            rec.setRotulo(lexItem.getTexto());
+            SymbolTable novaTs = new SymbolTable();
+            novaTs.setTabelaPai(st);
+            rec.setSymbolTable(novaTs);
+            st.addRecord(rec);
+//                novaTs.addRecord(rec);
+            st = novaTs;
+            st.addRecord(rec);
+            // Por este motivo, add na acao 56:  st = st.getTabelaPai();
+            offsetVar.add(0);
+            offsetVar.set(level, offsetVar.get(level)); //SIZEOF_INT
+            st.setRotulo(rec.getNome());
+            currentFuncProc = rec.getNome();
         } else {
             //Erro: identificador já declarado anteriormente
             return null;
         }
-        return registro;
+        return rec;
     }
 
     public void A07() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (!tabelaSimbolos.temRegistro(registro)) {
-            registro.setCategoria("Parametro");
-            registro.setNivel(nivel);
-            tabelaSimbolos.addRegistro(registro);
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        if (!st.temRecord(rec)) {
+            rec.setCategoria("Parametro");
+            rec.setNivel(level);
+            st.addRecord(rec);
         } else {
             //Erro: identificador já declarado anteriormente
         }
     }
 
     public void A08() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (!tabelaSimbolos.temRegistroTodasTabelas(registro)) {
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        if (!st.temRecordTodasTabelas(rec)) {
             //emitir uma mensagem apropriada dizendo que o mesmo ainda não foi declarado.
         } else {
-//            for(Registro r: procura.getRegistros()){
-//                registro = r;
+//            for(Record r: procura.getRecords()){
+//                rec = r;
 //            }
-            registro = tabelaSimbolos.getEsseRegistro(registro);
-            if (registro.getCategoria().equals("Variavel") || registro.getCategoria().equals("Parametro")) {
+            rec = st.getEsseRecord(rec);
+            if (rec.getCategoria().equals("Variavel") || rec.getCategoria().equals("Parametro")) {
                 insereLinhaArquivo("\tmov edx, ebp");
-                insereLinhaArquivo(String.format("\tlea eax, [edx - %d] ", registro.getOffset()));
+                insereLinhaArquivo(String.format("\tlea eax, [edx - %d] ", rec.getOffset()));
                 insereLinhaArquivo("\tpush eax");
                 insereLinhaArquivo("\tpush @INTEGER");
                 insereLinhaArquivo("\tcall _scanf");
@@ -264,17 +267,17 @@ public class Acoes {
     }
 
     public void A09() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (tabelaSimbolos.temRegistroTodasTabelas(registro)) {
-            registro = tabelaSimbolos.getEsseRegistro(registro);
-            if (registro.getCategoria().equals("Variavel") || registro.getCategoria().equals("Parametro")) {
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        if (st.temRecordTodasTabelas(rec)) {
+            rec = st.getEsseRecord(rec);
+            if (rec.getCategoria().equals("Variavel") || rec.getCategoria().equals("Parametro")) {
                 String basePilha = "ebp";
-                if (registro.getNivel() != nivel) {
-                    insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", 4 * registro.getNivel()));
+                if (rec.getNivel() != level) {
+                    insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", 4 * rec.getNivel()));
                     basePilha = "ebx";
                 }
-                insereLinhaArquivo(String.format("	push dword [%s - %d]", basePilha, registro.getOffset()));
+                insereLinhaArquivo(String.format("	push dword [%s - %d]", basePilha, rec.getOffset()));
                 insereLinhaArquivo(String.format("	push dword @INTEGER"));
                 insereLinhaArquivo("	call _printf");
                 insereLinhaArquivo(String.format("	add esp, 8"));
@@ -286,17 +289,17 @@ public class Acoes {
         }
     }
 
-    public ArrayList<String> A11(Registro ultimoId) {
+    public ArrayList<String> A11(Record ultimoId) {
         if (ultimoId != null) {
             String basePilha = "ebp";
-            if (ultimoId.getNivel() != nivel) {
+            if (ultimoId.getNivel() != level) {
                 insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", ultimoId.getNivel() * 4));
                 basePilha = "ebx";
             }
             insereLinhaArquivo(String.format("	pop dword [%s - %d]", basePilha, ultimoId.getOffset()));
             ArrayList<String> rotulosFor = new ArrayList<>();
-            rotulosFor.add(String.format("rotuloInFor%d", countRotulo++));
-            rotulosFor.add(String.format("rotuloEndFor%d", countRotulo++));
+            rotulosFor.add(String.format("rotuloInFor%d", ctLabel++));
+            rotulosFor.add(String.format("rotuloEndFor%d", ctLabel++));
             insereLinhaArquivo(String.format("%s:", rotulosFor.get(0)));// gerar rotulo _for
             return rotulosFor;
         } else {
@@ -304,17 +307,17 @@ public class Acoes {
         }
     }
 
-    public void A12(Registro ultimoId, ArrayList<String> rotulosFor) {
+    public void A12(Record ultimoId, ArrayList<String> rotulosFor) {
         insereLinhaArquivo(String.format("\tmov ebx, dword [@DSP + %d]", ultimoId.getNivel() * 4));
         insereLinhaArquivo("\tpop eax");
         insereLinhaArquivo(String.format("\tcmp [ebx - %d], eax", ultimoId.getOffset()));
         insereLinhaArquivo(String.format("\tjg %s", rotulosFor.get(1))); // usar rotulo gerado no gerador de rótulos;            
     }
 
-    public void A13(Registro ultimoId, ArrayList<String> rotulosFor) {
+    public void A13(Record ultimoId, ArrayList<String> rotulosFor) {
         if (ultimoId != null) {
             String basePilha = "ebp";
-            if (ultimoId.getNivel() != nivel) {
+            if (ultimoId.getNivel() != level) {
                 insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", ultimoId.getNivel() * 4));
                 basePilha = "ebx";
             }
@@ -325,7 +328,7 @@ public class Acoes {
     }
 
     public String A14() {
-        String rotulo = String.format("rotuloRepeat%d", countRotulo++);//criar rotulor de repetição do repeat
+        String rotulo = String.format("rotuloRepeat%d", ctLabel++);//criar rotulor de repetição do repeat
         insereLinhaArquivo(String.format("%s:", rotulo));
         return rotulo;
     }
@@ -340,8 +343,8 @@ public class Acoes {
 
     public ArrayList<String> A16() {
         ArrayList<String> rotulosWhile = new ArrayList<>();
-        rotulosWhile.add(String.format("rotuloInWhile%d", countRotulo++));//criar rotulo entrada while
-        rotulosWhile.add(String.format("rotuloEndWhile%d", countRotulo++));//criar rotulo saida while
+        rotulosWhile.add(String.format("rotuloInWhile%d", ctLabel++));//criar rotulo entrada while
+        rotulosWhile.add(String.format("rotuloEndWhile%d", ctLabel++));//criar rotulo saida while
         insereLinhaArquivo(String.format("%s:", rotulosWhile.get(0))); // para label while criada acima para entrada
         return rotulosWhile;
     }
@@ -359,8 +362,8 @@ public class Acoes {
 
     public ArrayList<String> A19() {
         ArrayList<String> rotulos = new ArrayList<>();
-        rotulos.add(String.format("rotuloInElse%d", countRotulo++));
-        rotulos.add(String.format("rotuloEndIf%d", countRotulo++));
+        rotulos.add(String.format("rotuloInElse%d", ctLabel++));
+        rotulos.add(String.format("rotuloEndIf%d", ctLabel++));
         insereLinhaArquivo("	cmp dword [esp],0");
         insereLinhaArquivo(String.format("	je %s", rotulos.get(0)));
         return rotulos;
@@ -375,21 +378,21 @@ public class Acoes {
         // gerar rotulo _fim_if
     }
 
-    public void A22(Registro registro) {
-        if (registro.getCategoria().equals("Variavel")) {
-            insereLinhaArquivo(String.format("\tmov eax, dword[@DSP+%d]", registro.getNivel() * 4));
+    public void A22(Record rec) {
+        if (rec.getCategoria().equals("Variavel")) {
+            insereLinhaArquivo(String.format("\tmov eax, dword[@DSP+%d]", rec.getNivel() * 4));
             insereLinhaArquivo("\tpop ebx");
-            insereLinhaArquivo(String.format("\tmov dword[eax - %d], ebx", registro.getOffset()));
+            insereLinhaArquivo(String.format("\tmov dword[eax - %d], ebx", rec.getOffset()));
             //Falta implementar caso seja uma função
         } else {
-            if (registro.getCategoria().equals("Funcao")) {
-                insereLinhaArquivo("\tpop dword[ebp +" + (12 + registro.getNumeroParametros() * 4) + "]");
+            if (rec.getCategoria().equals("Funcao")) {
+                insereLinhaArquivo("\tpop dword[ebp +" + (12 + rec.getNumeroParametros() * 4) + "]");
             }
         }
     }
 
-    public void A23(Registro ultimoId) {
-        if (ultimoId.getNumeroParametros() == countParametros) {
+    public void A23(Record ultimoId) {
+        if (ultimoId.getNumeroParametros() == ctParam) {
             insereLinhaArquivo(String.format("	call %s", ultimoId.getRotulo()));
             insereLinhaArquivo(String.format("	add esp, %d", ultimoId.getNumeroParametros() * 4));
         } else {
@@ -406,8 +409,8 @@ public class Acoes {
     }
 
     public void A26() {
-        String rotuloTrue = String.format("rotulo_true%d", countRotulo++); // Criar rotulo _true
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); //Criar rotulo _fim
+        String rotuloTrue = String.format("rotulo_true%d", ctLabel++); // Criar rotulo _true
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); //Criar rotulo _fim
         insereLinhaArquivo(String.format("	cmp dword [esp + 4], 1"));
         insereLinhaArquivo(String.format("	je %s", rotuloTrue));	// je rotulo _false
         insereLinhaArquivo(String.format("	cmp dword [esp], 1"));
@@ -421,8 +424,8 @@ public class Acoes {
     }
 
     public void A27() {
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // Criar rotulo _false
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); //Criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // Criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); //Criar rotulo _fim
         insereLinhaArquivo(String.format("	cmp dword [esp + 4], 0"));
         insereLinhaArquivo(String.format("	je %s", rotuloFalse));	// je rotulo _false
         insereLinhaArquivo(String.format("	cmp dword [esp], 0"));
@@ -444,8 +447,8 @@ public class Acoes {
     }
 
     public void A31() {
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); // criar rotulo _fim
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); // criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // criar rotulo _false
         insereLinhaArquivo(String.format("	pop eax"));
         insereLinhaArquivo(String.format("	cmp dword [esp], eax"));
         insereLinhaArquivo(String.format("	jne %s", rotuloFalse));
@@ -457,8 +460,8 @@ public class Acoes {
     }
 
     public void A32() {
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); // criar rotulo _fim
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); // criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // criar rotulo _false
         insereLinhaArquivo(String.format("	pop eax"));
         insereLinhaArquivo(String.format("	cmp dword [esp], eax"));
         insereLinhaArquivo(String.format("	jle %s", rotuloFalse));
@@ -470,8 +473,8 @@ public class Acoes {
     }
 
     public void A33() {
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); // criar rotulo _fim
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); // criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // criar rotulo _false
         insereLinhaArquivo(String.format("	pop eax"));
         insereLinhaArquivo(String.format("	cmp dword [esp], eax"));
         insereLinhaArquivo(String.format("	jl %s", rotuloFalse));
@@ -483,8 +486,8 @@ public class Acoes {
     }
 
     public void A34() {
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); // criar rotulo _fim
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); // criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // criar rotulo _false
         insereLinhaArquivo(String.format("	pop eax"));
         insereLinhaArquivo(String.format("	cmp dword [esp], eax"));
         insereLinhaArquivo(String.format("	jge %s", rotuloFalse));
@@ -496,8 +499,8 @@ public class Acoes {
     }
 
     public void A35() {
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); // criar rotulo _fim
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); // criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // criar rotulo _false
         insereLinhaArquivo(String.format("	pop eax"));
         insereLinhaArquivo(String.format("	cmp dword [esp], eax"));
         insereLinhaArquivo(String.format("	jg %s", rotuloFalse));
@@ -509,8 +512,8 @@ public class Acoes {
     }
 
     public void A36() {
-        String rotuloFim = String.format("rotuloFim%d", countRotulo++); // criar rotulo _fim
-        String rotuloFalse = String.format("rotuloFalse%d", countRotulo++); // criar rotulo _false
+        String rotuloFim = String.format("rotuloFim%d", ctLabel++); // criar rotulo _fim
+        String rotuloFalse = String.format("rotuloFalse%d", ctLabel++); // criar rotulo _false
         insereLinhaArquivo(String.format("	pop eax"));
         insereLinhaArquivo(String.format("	cmp dword [esp], eax"));
         insereLinhaArquivo(String.format("	je %s", rotuloFalse));
@@ -546,12 +549,12 @@ public class Acoes {
     }
 
     public void A41() {
-        insereLinhaArquivo(String.format("	push %d", Integer.parseInt(lexema.getTexto())));
+        insereLinhaArquivo(String.format("	push %d", Integer.parseInt(lexItem.getTexto())));
     }
 
-    public void A42(Registro ultimoId) {
-        if (ultimoId.getNumeroParametros() == countParametros) {
-            insereLinhaArquivo(String.format("\tcall %s", ultimoId.getTabelaSimbolos().getRotulo()));
+    public void A42(Record ultimoId) {
+        if (ultimoId.getNumeroParametros() == ctParam) {
+            insereLinhaArquivo(String.format("\tcall %s", ultimoId.getSymbolTable().getRotulo()));
             insereLinhaArquivo(String.format("\tadd esp, %d", ultimoId.getNumeroParametros() * 4));
         } else {
             //Erro: numero argumentos
@@ -560,16 +563,16 @@ public class Acoes {
 
     public void A44() {
         String rotulo = new String();
-        rotulo = tabelaSimbolos.getRotulo();
+        rotulo = st.getRotulo();
         insereLinhaArquivo(String.format("%s:", rotulo));
         insereLinhaArquivo("\tpush ebp");
-        insereLinhaArquivo(String.format("\tpush dword[@DSP + %d]", nivel * 4));
+        insereLinhaArquivo(String.format("\tpush dword[@DSP + %d]", level * 4));
         insereLinhaArquivo("\tmov ebp,esp");
-        insereLinhaArquivo(String.format("\tmov dword[@DSP +%d],ebp", nivel * 4));
+        insereLinhaArquivo(String.format("\tmov dword[@DSP +%d],ebp", level * 4));
 
         int nVariaveis = 0;
-        if (tabelaSimbolos != null && tabelaSimbolos.getRegistros() != null) {
-            for (Registro r : tabelaSimbolos.getRegistros()) {
+        if (st != null && st.getRecords() != null) {
+            for (Record r : st.getRecords()) {
                 if (r.getCategoria().equals("Variavel")) {
                     nVariaveis++;
                 }
@@ -581,10 +584,10 @@ public class Acoes {
 
     public void A45() {
         insereLinhaArquivo("section .data");
-        insereLinhaArquivo(String.format("\t@DSP times %d db 0", (nivel + 1) * 4));
+        insereLinhaArquivo(String.format("\t@DSP times %d db 0", (level + 1) * 4));
         insereLinhaArquivo("\t@INTEGER: db '%d' , 0");
 
-        for (String s : rotulosData) {
+        for (String s : labelData) {
             insereLinhaArquivo(s);
         }
     }
@@ -593,9 +596,9 @@ public class Acoes {
 
         //verifica quantidade de variaveis locais
         int variaveis = 0;
-        if (tabelaSimbolos != null && tabelaSimbolos.getRegistros() != null) {
-            for (Registro r : tabelaSimbolos.getRegistros()) {
-                if (r.getNivel() == nivel && r.getCategoria().equals("Variavel")) {
+        if (st != null && st.getRecords() != null) {
+            for (Record r : st.getRecords()) {
+                if (r.getNivel() == level && r.getCategoria().equals("Variavel")) {
                     variaveis++;
                 }
             }
@@ -603,54 +606,54 @@ public class Acoes {
 
         insereLinhaArquivo(String.format("\tadd esp, %d", variaveis * 4));
         insereLinhaArquivo("\tmov ebp, esp");
-        insereLinhaArquivo(String.format("\tpop dword[@DSP+%d]", nivel * 4));
+        insereLinhaArquivo(String.format("\tpop dword[@DSP+%d]", level * 4));
         insereLinhaArquivo("\tpop ebp");
         insereLinhaArquivo("\tret");
     }
 
-    public void A47(Registro ultimoId) {
-        ultimoId.setNumeroParametros(tabelaSimbolos.getNumeroRegistroParametro());
+    public void A47(Record ultimoId) {
+        ultimoId.setNumeroParametros(st.getNumeroRecordParametro());
     }
 
     public void A48(int nParametros) {
-        Registro r = new Registro();
+        Record r = new Record();
         r.setNome(currentFuncProc);
-        r = tabelaSimbolos.getTabelaPai().getEsseRegistro(r);
+        r = st.getTabelaPai().getEsseRecord(r);
         r.setNumeroParametros(nParametros);
         int n = 0;
         if (r.getCategoria().equals("Procedimento")) {
             for (int i = 0; i < nParametros; i++) {
                 n = 12 + (4 * (nParametros - (i + 1)));
-                tabelaSimbolos.getRegistros().get(i).setOffset(n);
+                st.getRecords().get(i).setOffset(n);
             }
         } else if (r.getCategoria().equals("Funcao")) {
             for (int i = 1; i < nParametros + 1; i++) {
                 n = 12 + (4 * (nParametros - i));
-                tabelaSimbolos.getRegistros().get(i).setOffset(n);
+                st.getRecords().get(i).setOffset(n);
             }
         }
     }
 
-    public Registro A49() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (tabelaSimbolos.temRegistroTodasTabelas(registro)) {
-            registro = tabelaSimbolos.getEsseRegistro(registro);
-            String categoria = registro.getCategoria();
+    public Record A49() {
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        if (st.temRecordTodasTabelas(rec)) {
+            rec = st.getEsseRecord(rec);
+            String categoria = rec.getCategoria();
             if (categoria == null || (!categoria.equals("Variavel") && !categoria.equals("Parametro"))) {
                 //Erro id nao e variavel/ parametro
             }
         } else {
-            registro = null;//Erro variavel ainda nao declarada
+            rec = null;//Erro variavel ainda nao declarada
         }
-        return registro;
+        return rec;
     }
 
-    public Registro A50() {
-        Registro r = new Registro();
-        r.setNome(lexema.getTexto());
-        if (tabelaSimbolos.temRegistroTodasTabelas(r)) {
-            r = tabelaSimbolos.getEsseRegistro(r);
+    public Record A50() {
+        Record r = new Record();
+        r.setNome(lexItem.getTexto());
+        if (st.temRecordTodasTabelas(r)) {
+            r = st.getEsseRecord(r);
             if (!r.getCategoria().equals("Procedimento")) {
                 //Erro: id deve ser procedimento
                 return null;
@@ -662,24 +665,24 @@ public class Acoes {
     }
 
     public void A55() {
-        Registro registro = registroGlobal;
-        if (tabelaSimbolos.temRegistroTodasTabelas(registro)) {
-            registro = tabelaSimbolos.getEsseRegistro(registro);
-            String categoria = registro.getCategoria();
+        Record rec = globalRecord;
+        if (st.temRecordTodasTabelas(rec)) {
+            rec = st.getEsseRecord(rec);
+            String categoria = rec.getCategoria();
             if (categoria != null && (categoria.equals("Variavel"))) {
                 String basePilha = "ebp";
-                if (registro.getNivel() != nivel) {
-                    insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", registro.getNivel() * 4));
+                if (rec.getNivel() != level) {
+                    insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", rec.getNivel() * 4));
                     basePilha = "ebx";
                 }
-                insereLinhaArquivo(String.format("	push dword [%s - %d]", basePilha, registro.getOffset()));
+                insereLinhaArquivo(String.format("	push dword [%s - %d]", basePilha, rec.getOffset()));
             } else if (categoria.equals("Parametro")) {
                 String basePilha = "ebp";
-                if (registro.getNivel() != nivel) {
-                    insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", registro.getNivel() * 4));
+                if (rec.getNivel() != level) {
+                    insereLinhaArquivo(String.format("	mov ebx, dword [@DSP + %d]", rec.getNivel() * 4));
                     basePilha = "ebx";
                 }
-                insereLinhaArquivo(String.format("	push dword [%s + %d]", basePilha, registro.getOffset()));
+                insereLinhaArquivo(String.format("	push dword [%s + %d]", basePilha, rec.getOffset()));
             }
         } else {
             //Erro variavel nao declarada
@@ -687,17 +690,17 @@ public class Acoes {
     }
 
     public void A56() {
-        nivel--;
-        tabelaSimbolos = tabelaSimbolos.getTabelaPai();
-        currentFuncProc = tabelaSimbolos.getRotulo();
+        level--;
+        st = st.getTabelaPai();
+        currentFuncProc = st.getRotulo();
     }
 
-    public Registro A57() {
-        Registro registro = new Registro();
-        registro.setNome(lexema.getTexto());
-        if (tabelaSimbolos.temRegistroTodasTabelas(registro)) {
-            registro = tabelaSimbolos.getEsseRegistro(registro);
-            if (!registro.getCategoria().equals("Variavel") && !registro.getCategoria().equals("Parametro") && !registro.getCategoria().equals("Funcao")) {
+    public Record A57() {
+        Record rec = new Record();
+        rec.setNome(lexItem.getTexto());
+        if (st.temRecordTodasTabelas(rec)) {
+            rec = st.getEsseRecord(rec);
+            if (!rec.getCategoria().equals("Variavel") && !rec.getCategoria().equals("Parametro") && !rec.getCategoria().equals("Funcao")) {
                 // Erro identificador não é uma variavel
                 return null;
             }
@@ -705,18 +708,18 @@ public class Acoes {
             //Erro variavel nao declarada
             return null;
         }
-        return registro;
+        return rec;
     }
 
-    public Registro A58(Registro ultimoId) {
-        Registro esse = null;
-        if (tabelaSimbolos.temRegistro(ultimoId)) {
-            ultimoId = tabelaSimbolos.getEsseRegistro(ultimoId);
+    public Record A58(Record ultimoId) {
+        Record esse = null;
+        if (st.temRecord(ultimoId)) {
+            ultimoId = st.getEsseRecord(ultimoId);
             if (ultimoId.getCategoria().equals("Funcao")) {
-                if (ultimoId.getNivel() != nivel) {
+                if (ultimoId.getNivel() != level) {
                     //Erro: id deve corresponder a funcao corrente
                 } else {
-                    esse = tabelaSimbolos.getEsseRegistro(ultimoId);
+                    esse = st.getEsseRecord(ultimoId);
                 }
             }
         } else {
@@ -731,7 +734,7 @@ public class Acoes {
         if (wln) {
             endString = ", 10, 0";
         }
-        rotulosData.add(String.format("\t%s db %s %s", rotuloString, lexema.getTexto(), endString));
+        labelData.add(String.format("\t%s db %s %s", rotuloString, lexItem.getTexto(), endString));
         insereLinhaArquivo(String.format("	push %s", rotuloString));
         insereLinhaArquivo("	call _printf");
         insereLinhaArquivo("	add esp, 4");

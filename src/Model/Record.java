@@ -9,7 +9,7 @@ package Model;
  *
  * @author Murilo Marcineiro
  */
-public class Registro {
+public class Record {
     private String nome;
     private String categoria;
     private int nivel;
@@ -17,7 +17,7 @@ public class Registro {
     private int offset;
     private int numeroParametros;
     private String rotulo;
-    private TabelaSimbolos tabelaSimbolos;
+    private SymbolTable tabelaSimbolos;
 
     public String getNome() {
         return nome;
@@ -76,11 +76,11 @@ public class Registro {
     }
 
 
-    public TabelaSimbolos getTabelaSimbolos() {
+    public SymbolTable getSymbolTable() {
         return tabelaSimbolos;
     }
 
-    public void setTabelaSimbolos(TabelaSimbolos tabelaSimbolos) {
+    public void setSymbolTable(SymbolTable tabelaSimbolos) {
         this.tabelaSimbolos = tabelaSimbolos;
     }
 

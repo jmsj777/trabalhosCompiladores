@@ -11,73 +11,73 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Francisco
  */
-public class ItemTabela {
+public class ItemTable {
     private int hash;
-    private Lexema item;
-    private ItemTabela proximo;
-    private ItemTabela anterior;
+    private LexItem item;
+    private ItemTable next;
+    private ItemTable last;
 
-    public ItemTabela(Lexema item, ItemTabela proximo, ItemTabela anterior, int hash) {
+    public ItemTable(LexItem item, ItemTable next, ItemTable last, int hash) {
         this.hash = hash;
         this.item = item;
-        this.proximo = proximo;
-        this.anterior = anterior;
+        this.next = next;
+        this.last = last;
     }
     
     public int getHash(){
         return hash;
     }
 
-    public Lexema getItem() {
+    public LexItem getItem() {
         return item;
     }
 
 
-    public ItemTabela getProximo() {
-        return proximo;
+    public ItemTable getProximo() {
+        return next;
     }
 
-    public void setProximo(ItemTabela proximo) {
-        this.proximo = proximo;
+    public void setProximo(ItemTable next) {
+        this.next = next;
     }
 
-    public ItemTabela getAnterior() {
-        return anterior;
+    public ItemTable getAnterior() {
+        return last;
     }
 
-    public void setAnterior(ItemTabela anterior) {
-        this.anterior = anterior;
+    public void setAnterior(ItemTable last) {
+        this.last = last;
     }
 
-    private ItemTabela ultimo(ItemTabela itemtabela){
-        ItemTabela resultado=itemtabela;
+    private ItemTable ultimo(ItemTable itemtabela){
+        ItemTable resultado=itemtabela;
         if(itemtabela.getProximo()!= null){
             resultado = ultimo(itemtabela.getProximo());
         }
         return resultado;
     }
-    public void insereProximo(ItemTabela pai, ItemTabela filho){
+    public void insereProximo(ItemTable pai, ItemTable filho){
         pai = ultimo(pai);
-        pai.proximo= filho;
-        filho.anterior =pai;
+        pai.next= filho;
+        filho.last =pai;
     }
     
-    public boolean existe(ItemTabela pai,String lexema, String categoria){
+    public boolean existe(ItemTable pai,String lexema, String categoria){
         boolean resultado=true;
         if(pai==null){
             resultado=false;
         }else{
             if(!pai.getItem().getTexto().equals(lexema) || !pai.getItem().getCategoria().equals(categoria)){
-                resultado = existe(pai.proximo,lexema, categoria);
+                resultado = existe(pai.next,lexema, categoria);
             }
         }
      return resultado;
     }
     
-    public void imprimeItensTabela(ItemTabela item, DefaultTableModel model){
+    public void imprimeItensTabela(ItemTable item, DefaultTableModel model){
         if(item!=null){
             model.addRow(new Object[]{item.getItem().getTexto(), item.getItem().getCategoria(), item.getItem().getTipo()});
-            imprimeItensTabela(item.proximo, model);
+            imprimeItensTabela(item.next, model);
         }
     }
 }
