@@ -172,6 +172,7 @@ public class PascalParser extends Parser {
 			setState(57);
 			match(T__1);
 			call(acoes, "A45");
+                        
 			}
 		}
 		catch (RecognitionException re) {

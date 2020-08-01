@@ -24,6 +24,7 @@ public class TestPascal {
         PascalParser parser = new PascalParser(tokens);
         // Chame a regra principal, expr, para a qual gerará
         //uma árvore sintática
+        
         ParseTree tree = parser.programa();
 
         // Cria um parse tree walker para gerenciar as chamadas
@@ -32,29 +33,7 @@ public class TestPascal {
         // Caminha na árvore criada durante a análise sintática e
         // chama os callbacks
         walker.walk(new PascalAssembly(), tree);
-
+        
         return parser.getAcoes();
     }
-    /*
-    public static void main(String[] args) throws Exception {
-        // Cria um CharStream que lê a partir da entrada padrão
-        String input = "program somar;\n"
-                + "var\n"
-                + "	n1, n2, soma, subtracao, multiplicacao, divisao:integer;\n"
-                + "begin\n"
-                + "	n1:=10;\n"
-                + "	n2:=2;\n"
-                + "	soma := n1+n2;\n"
-                + "	write(soma);\n"
-                + "	subtracao := n1-n2;\n"
-                + "	write(subtracao);\n"
-                + "	multiplicacao := n1*n2;\n"
-                + "	write(multiplicacao);\n"
-                + "	divisao := n1/n2;\n"
-                + "	write(divisao);\n"
-                + "end.";
-        String assembly = rodaPrograma(input);
-        System.out.println(assembly);
-    }
-    */
 }

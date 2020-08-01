@@ -443,7 +443,7 @@ public class Main extends javax.swing.JFrame {
                 }
 
                 Parser sintatic = new Parser(tokenL, simbols, analis.getError());
-                MessageField.setText(sintatic.getEmsg());
+                MessageField.setText("Erro no console");
                 int countr = 0;
                 for (int i = 0; i < sintatic.getSimbols().size(); i++) {
                     if (sintatic.getSimbols().get(i).getcat() == "Variável") {
