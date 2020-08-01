@@ -22,6 +22,22 @@ import javax.swing.JFileChooser;
  */
 public class FileControler {
     
+    public File newInstaFile(Main chose, String Ftext){
+        File file = null;
+        ///////////////////////////////////////
+        try {
+        JFileChooser fc = new JFileChooser();
+        java.io.File fileName = fc.getSelectedFile();
+        java.io.FileReader input = null; 
+        file = new File(Ftext, "temp_file", System.getProperty("user.dir"));
+        } catch (ArrayIndexOutOfBoundsException e)
+        {
+            e.printStackTrace();
+        }   
+        /////////////////////////////////////
+        return file;
+    }
+    
     public File newFile(Main chose, String Ftext){
         File file = null;
         
@@ -34,7 +50,6 @@ public class FileControler {
             }
             java.io.File fileName = fc.getSelectedFile();
             java.io.FileReader input = null;
-            
             file = new File(Ftext, fileName.getName(), (fc.getSelectedFile()).toString());
             
         } catch (ArrayIndexOutOfBoundsException e)

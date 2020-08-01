@@ -20,8 +20,8 @@ public class LexAnaliser {
     String code = "";
     int line = 1;
     int bigLogic = 0;
-    ArrayList<Tokens> token = new ArrayList<>();
-    ArrayList<Simbols> symbleTable = new ArrayList<>();
+    ArrayList<Tokens> tokens = new ArrayList<>();
+    ArrayList<Simbols> symbolTable = new ArrayList<>();
     ArrayList<String> Reserv = new ArrayList<>(Arrays.asList("begin", "and",  "div", "case", "const", "else", "end", "file", "for", "function", "do", "downto","goto",  "label", "mod","if", "in", "nil", "not", "of", "or", "packed", "procedure","program", "record", "repeat", "set", "then", "to", "type", "until", "var", "while", "with" ,"write", "read" , "integer"));
         
     public LexAnaliser(String code) {
@@ -30,13 +30,13 @@ public class LexAnaliser {
     }
     
     public ArrayList<Tokens> getTokens() {
-        return new ArrayList<Tokens>(token);
+        return new ArrayList<Tokens>(tokens);
     }
     public String getError() {
         return this.error;
     }
     public ArrayList<Simbols> getSimbols() {
-        return new ArrayList<Simbols>(symbleTable);
+        return new ArrayList<Simbols>(symbolTable);
     }
     
     public void getL()
@@ -69,32 +69,32 @@ public class LexAnaliser {
                     lexema += character;
                     status = 8;                
                 } else if (character == '(') {
-                    Tokens token = new Tokens("cLPar", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cLPar", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '[') {
-                    Tokens token = new Tokens("cLCha", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cLCha", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == ')') {
-                    Tokens token = new Tokens("cDPar", Character.toString(character), this.line, i);
-                    this.token.add(token);                    
+                    Tokens tokens = new Tokens("cDPar", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);                    
                 } else if (character == ']') {
-                    Tokens token = new Tokens("cRCha", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cRCha", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '*') {
-                    Tokens token = new Tokens("cMul", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cMul", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '/') {
-                    Tokens token = new Tokens("cDiv", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cDiv", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '+') {
-                    Tokens token = new Tokens("cAdd", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cAdd", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '-' || character == '–') {
-                    Tokens token = new Tokens("cSub", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cSub", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '=') {
-                    Tokens token = new Tokens("cEQ", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cEQ", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if ((character == '>') || (character == '<')) {
                     if((character == '>'))
                     {
@@ -106,14 +106,14 @@ public class LexAnaliser {
                     lexema += character;
                     status = 6;
                 } else if (character == ';') {
-                    Tokens token = new Tokens("cPVir", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cPVir", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == ',') {
-                    Tokens token = new Tokens("cVir", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cVir", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 } else if (character == '.') {
-                    Tokens token = new Tokens("cPto", Character.toString(character), this.line, i);
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cPto", Character.toString(character), this.line, i);
+                    this.tokens.add(tokens);
                 }
             }else if(status== 1) {
                 if ((Character.isDigit(character)) && !Character.isWhitespace(character)) {
@@ -122,20 +122,20 @@ public class LexAnaliser {
                     lexema += character;
                     status = 3;
                 } else {
-                    Tokens token = new Tokens("cInt", lexema, this.line, i - lexema.length());
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cInt", lexema, this.line, i - lexema.length());
+                    this.tokens.add(tokens);
                     i--;
                     status = 0;
                 }
             }else if(status== 2) {
                 if (character == '=') {
                     lexema += character;
-                    Tokens token = new Tokens("cAtr", lexema, this.line, i - lexema.length());
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cAtr", lexema, this.line, i - lexema.length());
+                    this.tokens.add(tokens);
                     status = 0;
                 } else {
-                    Tokens token = new Tokens("cDPto", lexema, this.line, i - lexema.length());
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cDPto", lexema, this.line, i - lexema.length());
+                    this.tokens.add(tokens);
                     i--;
                     status = 0;
                 }
@@ -162,19 +162,19 @@ public class LexAnaliser {
                 } else {
                     Simbols id = new Simbols(lexema.toLowerCase());
                     int endereco = 0;
-                    if (!symbleTable.contains(id) && !Reserv.contains(id.getlex().toLowerCase())) {
-                        id.setlocat(symbleTable.size());
-                        endereco = symbleTable.size();
-                        symbleTable.add(id);
-                    } else if (symbleTable.contains(id) && !Reserv.contains(id.getlex().toLowerCase())) {
-                        endereco = symbleTable.indexOf(id);
+                    if (!symbolTable.contains(id) && !Reserv.contains(id.getlex().toLowerCase())) {
+                        id.setlocat(symbolTable.size());
+                        endereco = symbolTable.size();
+                        symbolTable.add(id);
+                    } else if (symbolTable.contains(id) && !Reserv.contains(id.getlex().toLowerCase())) {
+                        endereco = symbolTable.indexOf(id);
                     }
                     if (Reserv.contains(lexema.toLowerCase())) {
-                        Tokens token = new Tokens("Reserved Word", lexema, this.line, i - lexema.length());
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("Reserved Word", lexema, this.line, i - lexema.length());
+                        this.tokens.add(tokens);
                     } else {
-                        Tokens token = new Tokens("cId", lexema, this.line, i - lexema.length(), endereco);
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("cId", lexema, this.line, i - lexema.length(), endereco);
+                        this.tokens.add(tokens);
                     }
                     i--;
                     status = 0;
@@ -183,26 +183,26 @@ public class LexAnaliser {
                 if(bigLogic == 1){
                     if (character == '=') {
                         lexema += character;
-                        Tokens token = new Tokens("cGE", lexema, this.line, i - lexema.length());
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("cGE", lexema, this.line, i - lexema.length());
+                        this.tokens.add(tokens);
                     } else {
-                        Tokens token = new Tokens("cGT", lexema, this.line, i - lexema.length());
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("cGT", lexema, this.line, i - lexema.length());
+                        this.tokens.add(tokens);
                         i--;
                     }
                     status = 0;
                 }else{
                     if (character == '=') {
                         lexema += character;
-                        Tokens token = new Tokens("cLE", lexema, this.line, i - lexema.length());
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("cLE", lexema, this.line, i - lexema.length());
+                        this.tokens.add(tokens);
                     } else if (character == '>') {
                         lexema += character;
-                        Tokens token = new Tokens("cNE", lexema, this.line, i - lexema.length());
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("cNE", lexema, this.line, i - lexema.length());
+                        this.tokens.add(tokens);
                     } else {
-                        Tokens token = new Tokens("cLT", lexema, this.line, i - lexema.length());
-                        this.token.add(token);
+                        Tokens tokens = new Tokens("cLT", lexema, this.line, i - lexema.length());
+                        this.tokens.add(tokens);
                         i--;
                     }
                     status = 0;
@@ -213,14 +213,14 @@ public class LexAnaliser {
                     status = 7;
                 } else if (character == '"') {
                     lexema += character;
-                    Tokens token = new Tokens("cStr", lexema, this.line, i - lexema.length());
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cStr", lexema, this.line, i - lexema.length());
+                    this.tokens.add(tokens);
                     status = 0;
                 } else {
                     lexema += '"';
                     adError(this.line);
-                    Tokens token = new Tokens("cStr", lexema, this.line, i - lexema.length());
-                    this.token.add(token);
+                    Tokens tokens = new Tokens("cStr", lexema, this.line, i - lexema.length());
+                    this.tokens.add(tokens);
                     i--;
                     status = 0;
                 }

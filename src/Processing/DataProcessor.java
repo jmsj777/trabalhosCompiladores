@@ -20,7 +20,7 @@ public class DataProcessor {
     public RunResponse runCode(File file, String code) throws IOException
     {
         file.setfText(code);
-        control.saveFile(file, code);
+        //control.saveFile(file, code);
         RunResponse response = new RunResponse();
         file.setChars(control.countCharacters(file));
         file.setCharNoSpaces(control.countCharNoSpaces(file));
@@ -32,7 +32,7 @@ public class DataProcessor {
         file.setAIndex(control.AIndexOrganizer(file));
         
         //Estatisticas
-        JOptionPane.showMessageDialog(null,"File saved. Runing Code!","Runing...",1);  
+        JOptionPane.showMessageDialog(null,"Runing Code!","Runing...",1);  
         response.setStatistics("Quantidade de caracteres (incluindo espaço): "+file.getChars()+"\n");
         response.setStatistics(response.getStatistics()+"Quantidade de caracteres (sem considerar o espaço): "+file.getCharNoSpaces()+"\n");
         response.setStatistics(response.getStatistics()+"Quantidade de palavras: "+file.getWords().length+"\n");
